@@ -1,0 +1,7 @@
+[
+  {
+    "origin": ["https://akademiadermatoskopiitesty.web.app"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]

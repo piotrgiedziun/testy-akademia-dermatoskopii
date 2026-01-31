@@ -1,0 +1,176 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAuthStore } from '@/stores';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { Loading, TermsModal } from '@/components/ui';
+
+// Pages
+import { HomePage } from '@/features/home';
+import { LoginPage, RegisterPage, ProfilePage } from '@/features/auth';
+import { LevelsPage, TestsPage } from '@/features/courses';
+import { QuizPage } from '@/features/quiz';
+import { ResultsPage } from '@/features/results';
+import {
+  AdminLayout,
+  AdminDashboard,
+  LevelsAdmin,
+  TestsAdmin,
+  CasesAdmin,
+  UsersAdmin,
+  ModerationDashboard,
+  AccessRequestsAdmin,
+} from '@/features/admin';
+import {
+  CommunityCasesPage,
+  CaseDetailPage,
+  CreateCasePage,
+  UserProfilePage,
+  LeaderboardPage,
+} from '@/features/community';
+
+function App() {
+  const { initialize, isInitialized, user, acceptTerms, logout } = useAuthStore();
+
+  useEffect(() => {
+    const unsubscribe = initialize();
+    return unsubscribe;
+  }, [initialize]);
+
+  if (!isInitialized) {
+    return <Loading fullScreen />;
+  }
+
+  // Show terms modal if user is logged in but hasn't accepted terms
+  const needsTermsAcceptance = user && !user.termsAcceptedAt;
+
+  const handleAcceptTerms = async () => {
+    await acceptTerms();
+  };
+
+  const handleDeclineTerms = async () => {
+    await logout();
+  };
+
+  return (
+    <BrowserRouter>
+      <TermsModal
+        isOpen={needsTermsAcceptance || false}
+        onAccept={handleAcceptTerms}
+        onDecline={handleDeclineTerms}
+      />
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        {/* Protected routes */}
+        <Route
+          path="/levels"
+          element={
+            <ProtectedRoute>
+              <LevelsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/levels/:levelId"
+          element={
+            <ProtectedRoute>
+              <TestsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/quiz/:testId"
+          element={
+            <ProtectedRoute>
+              <QuizPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/results/:attemptId"
+          element={
+            <ProtectedRoute>
+              <ResultsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Community routes */}
+        <Route
+          path="/community"
+          element={
+            <ProtectedRoute>
+              <CommunityCasesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/community/case/:caseId"
+          element={
+            <ProtectedRoute requireCasesAccess>
+              <CaseDetailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/community/create"
+          element={
+            <ProtectedRoute requireCasesAccess>
+              <CreateCasePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/community/user/:userId"
+          element={
+            <ProtectedRoute requireCasesAccess>
+              <UserProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/community/leaderboard"
+          element={
+            <ProtectedRoute requireCasesAccess>
+              <LeaderboardPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin routes */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requireAdmin>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminDashboard />} />
+          <Route path="levels" element={<LevelsAdmin />} />
+          <Route path="tests" element={<TestsAdmin />} />
+          <Route path="cases" element={<CasesAdmin />} />
+          <Route path="users" element={<UsersAdmin />} />
+          <Route path="moderation" element={<ModerationDashboard />} />
+          <Route path="access-requests" element={<AccessRequestsAdmin />} />
+        </Route>
+
+        {/* 404 */}
+        <Route path="*" element={<HomePage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;

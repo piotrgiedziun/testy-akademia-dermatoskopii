@@ -1,0 +1,168 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null &&
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // Helper function to check if user can access community (admin OR has casesAccess permission)
+    function canAccessCommunity() {
+      return isAdmin() ||
+             (request.auth != null &&
+              exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.permissions != null &&
+              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.permissions.casesAccess == true);
+    }
+
+    // Helper function to check if user can moderate (admin OR has moderator permission)
+    function canModerate() {
+      return isAdmin() ||
+             (request.auth != null &&
+              exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.permissions != null &&
+              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.permissions.moderator == true);
+    }
+
+    // Users collection
+    match /users/{userId} {
+      // Users can read their own profile, admins can read all
+      // Users with casesAccess can read other users' profiles (for community)
+      allow read: if isOwner(userId) || isAdmin() || canAccessCommunity();
+      // Users can create their own profile during registration
+      allow create: if isOwner(userId);
+      // Only admins can update user roles/permissions, users can update own non-sensitive fields
+      allow update: if isOwner(userId) &&
+                      (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'permissions'])) ||
+                      isAdmin();
+      // Only admins can delete users
+      allow delete: if isAdmin();
+    }
+
+    // Levels collection (read-only for users, full access for admins)
+    match /levels/{levelId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Tests collection (read-only for users, full access for admins)
+    match /tests/{testId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Cases collection (read-only for users, full access for admins)
+    match /cases/{caseId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // User progress - users can read/write their own progress
+    match /userProgress/{userId} {
+      allow read, write: if isOwner(userId);
+
+      match /attempts/{attemptId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Community Cases collection
+    match /communityCases/{caseId} {
+      // Admins/moderators can read all, users with access can read active/flagged
+      allow read: if canModerate() ||
+                     (canAccessCommunity() && resource.data.status in ['active', 'flagged']);
+      // Users with casesAccess can create cases
+      allow create: if canAccessCommunity() &&
+                       request.resource.data.authorId == request.auth.uid;
+      // Authors can update their own cases, moderators/admins can update any
+      // Users with casesAccess can update commentsCount/updatedAt (for posting comments)
+      // Users with casesAccess can flag content (set status to 'flagged' only)
+      allow update: if canModerate() ||
+                       (canAccessCommunity() && resource.data.authorId == request.auth.uid &&
+                        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'authorId'])) ||
+                       (canAccessCommunity() &&
+                        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['commentsCount', 'updatedAt'])) ||
+                       (canAccessCommunity() &&
+                        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) &&
+                        request.resource.data.status == 'flagged');
+      // Only admins can delete cases
+      allow delete: if isAdmin();
+
+      // Comments subcollection
+      match /comments/{commentId} {
+        // Admins/moderators can read all, users with access can read active/flagged
+        allow read: if canModerate() ||
+                       (canAccessCommunity() && resource.data.status in ['active', 'flagged']);
+        // Users with casesAccess can create comments
+        allow create: if canAccessCommunity() &&
+                         request.resource.data.authorId == request.auth.uid;
+        // Authors can update their own comments, moderators/admins can update any
+        // Users with casesAccess can flag content (set status to 'flagged' only)
+        allow update: if canModerate() ||
+                         (canAccessCommunity() && resource.data.authorId == request.auth.uid &&
+                          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'authorId'])) ||
+                         (canAccessCommunity() &&
+                          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) &&
+                          request.resource.data.status == 'flagged');
+        // Only admins can delete comments
+        allow delete: if isAdmin();
+      }
+    }
+
+    // Content flags collection
+    match /contentFlags/{flagId} {
+      // Only moderators/admins can read flags
+      allow read: if canModerate();
+      // Users with casesAccess can create flags (report content)
+      allow create: if canAccessCommunity() &&
+                       request.resource.data.reporterId == request.auth.uid;
+      // Only moderators/admins can update flags (resolve)
+      allow update: if canModerate();
+      // Only admins can delete flags
+      allow delete: if isAdmin();
+    }
+
+    // User community stats
+    match /userCommunityStats/{userId} {
+      // Anyone with casesAccess can read stats (for profiles)
+      allow read: if canAccessCommunity();
+      // Only the owner or admin can write stats
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    // Leaderboards collection
+    match /leaderboards/{month} {
+      // Anyone with casesAccess can read leaderboards
+      allow read: if canAccessCommunity();
+      // Only moderators/admins can write to leaderboards
+      allow write: if canModerate();
+    }
+
+    // Access Requests collection
+    match /accessRequests/{requestId} {
+      // Users can read their own requests, moderators/admins can read all
+      allow read: if canModerate() ||
+                     (isAuthenticated() && resource.data.userId == request.auth.uid);
+      // Authenticated users can create requests for themselves
+      allow create: if isAuthenticated() &&
+                       request.resource.data.userId == request.auth.uid;
+      // Only moderators/admins can update requests (approve/reject)
+      allow update: if canModerate();
+      // Only admins can delete requests
+      allow delete: if isAdmin();
+    }
+  }
+}
