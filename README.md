@@ -97,6 +97,12 @@ scripts/          # Utility scripts (seeding, admin)
 .github/          # CI/CD workflows
 ```
 
+## Upgrade packages
+
+```bash
+npx npm-check-updates -u --target minor && npm install 
+```
+
 ## Testing
 
 ### Unit Tests
