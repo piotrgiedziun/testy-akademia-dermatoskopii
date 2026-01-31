@@ -64,6 +64,7 @@ export function CasesAdmin() {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getLocalizedText = (text: { pl: string; en: string }) => {
@@ -93,6 +94,7 @@ export function CasesAdmin() {
 
   const currentFormAnswers = useMemo(() => {
     return getTestAnswers(formData.testId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.testId, tests]);
 
   const handleImageUpload = async (

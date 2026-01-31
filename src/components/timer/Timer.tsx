@@ -69,7 +69,7 @@ export function Timer({
   const isLowTime = mode === 'countdown' && timeRemaining <= 10;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2" data-testid="quiz-timer">
       <div className="flex items-center justify-between">
         <span className="text-sm text-gray-500">
           {mode === 'countdown' ? t('quiz.timeRemaining') : t('quiz.timeSpent')}

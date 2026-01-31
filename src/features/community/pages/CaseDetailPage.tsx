@@ -159,12 +159,13 @@ export function CaseDetailPage() {
 
             {/* Description */}
             <Card>
-              <h1 className="text-2xl font-bold text-charcoal mb-2">{caseData.title}</h1>
+              <h1 className="text-2xl font-bold text-charcoal mb-2" data-testid="case-title">{caseData.title}</h1>
 
               <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
                 <Link
                   to={`/community/user/${caseData.authorId}`}
                   className="hover:text-primary"
+                  data-testid="case-author"
                 >
                   {caseData.authorName}
                 </Link>
@@ -172,7 +173,7 @@ export function CaseDetailPage() {
                 <span>{formatDate(caseData.createdAt)}</span>
               </div>
 
-              <p className="text-gray-700 whitespace-pre-wrap">{caseData.description}</p>
+              <p className="text-gray-700 whitespace-pre-wrap" data-testid="case-description">{caseData.description}</p>
 
               {/* Actions */}
               {user && (
@@ -226,7 +227,7 @@ export function CaseDetailPage() {
             </Card>
 
             {/* Comments section */}
-            <div className="space-y-4">
+            <div className="space-y-4" data-testid="comments-section">
               <h2 className="text-xl font-semibold text-charcoal">
                 {t('community.comments')} ({comments.length})
               </h2>

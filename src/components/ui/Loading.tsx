@@ -12,7 +12,7 @@ const sizeClasses = {
 
 export function Loading({ size = 'md', text, fullScreen = false }: LoadingProps) {
   const spinner = (
-    <div className="flex flex-col items-center justify-center gap-3">
+    <div className="flex flex-col items-center justify-center gap-3" data-testid="loading-spinner">
       <svg
         className={`animate-spin text-primary ${sizeClasses[size]}`}
         xmlns="http://www.w3.org/2000/svg"

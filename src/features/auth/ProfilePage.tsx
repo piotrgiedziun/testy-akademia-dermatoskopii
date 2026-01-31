@@ -67,10 +67,10 @@ export function ProfilePage() {
               </span>
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-charcoal">
+              <h2 className="text-xl font-semibold text-charcoal" data-testid="profile-name">
                 {user?.displayName}
               </h2>
-              <p className="text-gray-500">{user?.email}</p>
+              <p className="text-gray-500" data-testid="profile-email">{user?.email}</p>
             </div>
           </div>
         </Card>
@@ -82,15 +82,15 @@ export function ProfilePage() {
         <Card className="mb-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center p-4 bg-gray-50 rounded-xl">
-              <p className="text-2xl font-bold text-primary">{totalPoints}</p>
+              <p className="text-2xl font-bold text-primary" data-testid="profile-points">{totalPoints}</p>
               <p className="text-sm text-gray-500">{t('profile.totalPoints')}</p>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-xl">
-              <p className="text-2xl font-bold text-primary">{testsCompleted}</p>
+              <p className="text-2xl font-bold text-primary" data-testid="profile-tests">{testsCompleted}</p>
               <p className="text-sm text-gray-500">{t('profile.testsCompleted')}</p>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-xl">
-              <p className="text-2xl font-bold text-primary">{avgAccuracy}%</p>
+              <p className="text-2xl font-bold text-primary" data-testid="profile-accuracy">{avgAccuracy}%</p>
               <p className="text-sm text-gray-500">{t('profile.avgAccuracy')}</p>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-xl">

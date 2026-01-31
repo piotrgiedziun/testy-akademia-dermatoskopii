@@ -34,8 +34,8 @@ export function TermsModal({ isOpen, onAccept, onDecline }: TermsModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" data-testid="terms-modal">
+      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col" data-testid="terms-content">
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-xl font-bold text-charcoal">
             {t('terms.title')}

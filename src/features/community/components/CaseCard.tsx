@@ -21,7 +21,7 @@ export function CaseCard({ case_ }: CaseCardProps) {
   const primaryImage = case_.images.find((img) => img.type === 'dermatoscopic') || case_.images[0];
 
   return (
-    <Link to={`/community/case/${case_.id}`}>
+    <Link to={`/community/case/${case_.id}`} data-testid="community-case-card">
       <Card hoverable className="overflow-hidden">
         <div className="flex gap-4">
           {primaryImage && (

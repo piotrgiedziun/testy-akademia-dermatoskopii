@@ -150,7 +150,7 @@ export function ModerationDashboard() {
       {flags.length > 0 ? (
         <div className="space-y-4">
           {flags.map((flag) => (
-            <Card key={flag.id}>
+            <Card key={flag.id} data-testid="flagged-item">
               <div className="space-y-4">
                 {/* Flag header */}
                 <div className="flex items-start justify-between">

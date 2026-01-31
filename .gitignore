@@ -35,9 +35,18 @@ dist-ssr
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+storage-debug.log
+pubsub-debug.log
+database-debug.log
+auth-debug.log
 
 # Test coverage
 coverage
+
+# Playwright E2E tests
+playwright-report/
+test-results/
+playwright/.cache/
 
 # Generated outputs
 dist-node/

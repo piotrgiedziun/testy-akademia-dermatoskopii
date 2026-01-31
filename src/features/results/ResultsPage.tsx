@@ -111,11 +111,11 @@ export function ResultsPage() {
         <Card className="mb-4">
           <div className="grid grid-cols-2 gap-4 text-center">
             <div className="p-4 bg-primary bg-opacity-5 rounded-xl">
-              <p className="text-3xl font-bold text-primary">{attempt.score}</p>
+              <p className="text-3xl font-bold text-primary" data-testid="result-score">{attempt.score}</p>
               <p className="text-sm text-gray-500">{t('results.score')}</p>
             </div>
             <div className="p-4 bg-primary bg-opacity-5 rounded-xl">
-              <p className="text-3xl font-bold text-primary">{attempt.accuracy}%</p>
+              <p className="text-3xl font-bold text-primary" data-testid="result-accuracy">{attempt.accuracy}%</p>
               <p className="text-sm text-gray-500">{t('results.accuracy')}</p>
             </div>
           </div>
@@ -126,17 +126,17 @@ export function ResultsPage() {
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-gray-600">{t('results.totalTime')}</span>
-              <span className="font-semibold">{formatDuration(totalTime)}</span>
+              <span className="font-semibold" data-testid="result-time">{formatDuration(totalTime)}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-600">{t('results.questionsCorrect')}</span>
-              <span className="font-semibold text-green-600">
+              <span className="font-semibold text-green-600" data-testid="result-correct">
                 {correctCount} / {attempt.answers.length}
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-600">{t('results.questionsMissed')}</span>
-              <span className="font-semibold text-red-600">{incorrectCount}</span>
+              <span className="font-semibold text-red-600" data-testid="result-incorrect">{incorrectCount}</span>
             </div>
             {timedOutCount > 0 && (
               <div className="flex justify-between items-center">

@@ -164,6 +164,7 @@ export function LeaderboardPage() {
               leaderboard.entries.map((entry) => (
                 <div
                   key={entry.userId}
+                  data-testid={user?.uid === entry.userId ? 'current-user-entry' : 'leaderboard-entry'}
                   className={`flex items-center gap-4 py-3 ${
                     user?.uid === entry.userId ? 'bg-primary/5 -mx-4 px-4 rounded-lg' : ''
                   }`}

@@ -63,7 +63,7 @@ export function LevelsPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {levels.map((level) => (
-            <Link key={level.id} to={`/levels/${level.id}`}>
+            <Link key={level.id} to={`/levels/${level.id}`} data-testid="level-card">
               <Card hoverable className="h-full">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">

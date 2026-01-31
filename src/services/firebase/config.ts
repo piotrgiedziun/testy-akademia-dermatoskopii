@@ -20,15 +20,10 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-let app: FirebaseApp;
-let auth: Auth;
-let db: Firestore;
-let storage: FirebaseStorage;
-
-app = initializeApp(firebaseConfig);
-auth = getAuth(app);
-db = getFirestore(app);
-storage = getStorage(app);
+const app: FirebaseApp = initializeApp(firebaseConfig);
+const auth: Auth = getAuth(app);
+const db: Firestore = getFirestore(app);
+const storage: FirebaseStorage = getStorage(app);
 
 // Connect to emulators if running locally with VITE_USE_EMULATORS=true
 if (import.meta.env.VITE_USE_EMULATORS === "true") {

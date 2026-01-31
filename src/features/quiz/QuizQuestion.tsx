@@ -87,7 +87,7 @@ export function QuizQuestion({
             </svg>
           </button>
 
-          <div className="text-center">
+          <div className="text-center" data-testid="quiz-progress">
             <span className="text-sm text-gray-500">
               {t('quiz.question')} {currentIndex + 1} {t('quiz.of')} {totalQuestions}
             </span>
@@ -124,7 +124,9 @@ export function QuizQuestion({
           )}
 
           {/* Image viewer */}
-          <ImageViewer images={currentCase.images} onImageLoad={onImageLoad} />
+          <div data-testid="case-image">
+            <ImageViewer images={currentCase.images} onImageLoad={onImageLoad} />
+          </div>
 
           {/* Answer button */}
           <div className="mt-4">
@@ -149,6 +151,7 @@ export function QuizQuestion({
               <button
                 key={answer.id}
                 onClick={() => handleAnswerSelect(answer.id)}
+                data-testid="answer-option"
                 className={`
                   w-full text-left p-3 rounded-lg border-2 transition-all
                   ${isSelected

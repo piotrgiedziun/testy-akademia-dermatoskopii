@@ -90,6 +90,7 @@ export function CommentList({
       <div
         key={comment.id}
         className={`${isReply ? 'ml-8 border-l-2 border-gray-200 pl-4' : ''}`}
+        data-testid="comment-item"
       >
         <Card padding="sm" className="mb-3">
           <div className="flex items-start gap-3">

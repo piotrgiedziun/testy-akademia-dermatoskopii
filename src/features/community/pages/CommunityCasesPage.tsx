@@ -13,19 +13,14 @@ import type { DocumentSnapshot } from "firebase/firestore";
 export function CommunityCasesPage() {
   const { t } = useTranslation();
   const { user } = useAuthStore();
-
-  // Check if user has access
-  const hasAccess = user?.role === 'admin' || user?.permissions?.casesAccess;
-
-  // If user doesn't have access, show access request page
-  if (!hasAccess) {
-    return <AccessRequestPage />;
-  }
   const [cases, setCases] = useState<CommunityCase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null);
   const [hasMore, setHasMore] = useState(true);
+
+  // Check if user has access
+  const hasAccess = user?.role === 'admin' || user?.permissions?.casesAccess;
 
   const fetchCases = useCallback(
     async (loadMore = false) => {
@@ -58,8 +53,15 @@ export function CommunityCasesPage() {
   );
 
   useEffect(() => {
-    fetchCases();
-  }, []);
+    if (hasAccess) {
+      fetchCases();
+    }
+  }, [hasAccess, fetchCases]);
+
+  // If user doesn't have access, show access request page
+  if (!hasAccess) {
+    return <AccessRequestPage />;
+  }
 
   if (isLoading) {
     return (

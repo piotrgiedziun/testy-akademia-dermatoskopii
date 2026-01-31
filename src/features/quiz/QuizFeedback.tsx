@@ -43,7 +43,7 @@ export function QuizFeedback({
   const hasAnnotations = currentCase.annotations && currentCase.annotations.length > 0;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col" data-testid="quiz-feedback">
       {/* Header */}
       <div
         className={`px-4 py-4 safe-area-inset-top ${
@@ -53,6 +53,7 @@ export function QuizFeedback({
             ? 'bg-green-500'
             : 'bg-red-500'
         }`}
+        data-testid={userAnswer.timedOut ? 'feedback-timeout' : userAnswer.correct ? 'feedback-correct' : 'feedback-incorrect'}
       >
         <div className="max-w-4xl mx-auto text-center text-white">
           <div className="text-2xl font-bold mb-1">
@@ -144,7 +145,7 @@ export function QuizFeedback({
 
           {/* Explanation content */}
           {showExplanation && (
-            <Card className="space-y-4">
+            <Card className="space-y-4" data-testid="explanation">
               {/* Main explanation */}
               <div>
                 <p className="text-gray-700">{getLocalizedText(currentCase.explanation)}</p>
@@ -152,7 +153,7 @@ export function QuizFeedback({
 
               {/* Features */}
               {currentCase.features.length > 0 && (
-                <div>
+                <div data-testid="features">
                   <h4 className="font-semibold text-charcoal mb-2">{t('quiz.features')}</h4>
                   <ul className="list-disc list-inside space-y-1 text-gray-700">
                     {currentCase.features.map((feature, index) => (

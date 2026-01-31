@@ -90,7 +90,7 @@ export function UsersAdmin() {
 
       <div className="space-y-3">
         {filteredUsers.map((user) => (
-          <Card key={user.uid}>
+          <Card key={user.uid} data-testid="admin-user-row">
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-3">
@@ -118,6 +118,7 @@ export function UsersAdmin() {
                   size="sm"
                   onClick={() => handleToggleCasesAccess(user)}
                   disabled={updatingUserId === user.uid}
+                  data-testid="cases-access-toggle"
                 >
                   {user.permissions?.casesAccess
                     ? t('community.hasAccess')
@@ -129,6 +130,7 @@ export function UsersAdmin() {
                   size="sm"
                   onClick={() => handleToggleModerator(user)}
                   disabled={updatingUserId === user.uid}
+                  data-testid="moderator-toggle"
                 >
                   {user.permissions?.moderator
                     ? t('community.isModerator')

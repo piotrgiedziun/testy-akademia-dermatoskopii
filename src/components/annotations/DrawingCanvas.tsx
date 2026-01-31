@@ -85,6 +85,7 @@ export function DrawingCanvas({
     annotations.forEach((annotation) => {
       drawAnnotation(ctx, annotation, canvas.width, canvas.height);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [annotations, imageSize]);
 
   const drawAnnotation = (

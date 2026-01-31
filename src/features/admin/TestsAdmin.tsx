@@ -177,7 +177,7 @@ export function TestsAdmin() {
 
       <div className="space-y-4">
         {tests.map((test) => (
-          <Card key={test.id}>
+          <Card key={test.id} data-testid="admin-test-row">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-400 mb-1">
@@ -218,7 +218,7 @@ export function TestsAdmin() {
         title={editingTest ? t('admin.edit') : t('admin.add')}
         size="lg"
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" data-testid="test-form">
           <div>
             <label className="block text-sm font-medium text-charcoal mb-1">
               Level

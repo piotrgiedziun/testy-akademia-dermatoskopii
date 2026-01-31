@@ -117,7 +117,7 @@ export function TestsPage() {
       ) : (
         <div className="space-y-4">
           {tests.map((test) => (
-            <Card key={test.id}>
+            <Card key={test.id} data-testid="test-card">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex-1">
                   <h2 className="font-semibold text-charcoal mb-1">

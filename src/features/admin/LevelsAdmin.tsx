@@ -109,7 +109,7 @@ export function LevelsAdmin() {
 
       <div className="space-y-4">
         {levels.map((level) => (
-          <Card key={level.id}>
+          <Card key={level.id} data-testid="admin-level-row">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
@@ -152,7 +152,7 @@ export function LevelsAdmin() {
         title={editingLevel ? t('admin.edit') : t('admin.add')}
         size="lg"
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" data-testid="level-form">
           <Input
             type="number"
             label="Order"
