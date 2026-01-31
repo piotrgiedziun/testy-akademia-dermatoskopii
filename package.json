@@ -23,7 +23,7 @@
     "clean-db": "tsx scripts/clean-firestore.ts"
   },
   "dependencies": {
-    "firebase": "^10.14.1",
+    "firebase": "^12.8.0",
     "i18next": "^23.16.8",
     "i18next-browser-languagedetector": "^7.2.2",
     "i18next-http-backend": "^2.7.3",
