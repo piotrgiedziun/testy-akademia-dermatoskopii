@@ -5,7 +5,7 @@
   },
   "nav": {
     "home": "Strona główna",
-    "levels": "Poziomy",
+    "levels": "Nauka",
     "community": "Społeczność",
     "profile": "Profil",
     "admin": "Panel admina",
@@ -39,7 +39,22 @@
   "home": {
     "welcome": "Witamy w Akademii Dermatoskopii",
     "description": "Rozwijaj swoje umiejętności diagnostyczne poprzez interaktywne testy i przypadki kliniczne.",
-    "startLearning": "Rozpocznij naukę"
+    "startLearning": "Rozpocznij naukę",
+    "features": {
+      "title": "Dlaczego nasza platforma?",
+      "interactive": {
+        "title": "Interaktywne testy",
+        "description": "Ćwicz na prawdziwych obrazach i otrzymuj natychmiastową informację zwrotną."
+      },
+      "cases": {
+        "title": "Przypadki kliniczne",
+        "description": "Ucz się na opisanych przypadkach ze szczegółowymi wyjaśnieniami."
+      },
+      "community": {
+        "title": "Społeczność",
+        "description": "Dziel się przypadkami i dyskutuj z innymi dermatologami."
+      }
+    }
   },
   "levels": {
     "title": "Poziomy",
@@ -231,6 +246,8 @@
     "histopathologyPlaceholder": "Wprowadź wynik histopatologiczny jeśli dostępny",
     "diagnosisNote": "Diagnoza będzie ukryta przez 48 godzin, aby umożliwić dyskusję przed ujawnieniem",
     "publishCase": "Opublikuj przypadek",
+    "editCase": "Edytuj przypadek",
+    "updateCase": "Zapisz zmiany",
     "errors": {
       "titleRequired": "Wprowadź tytuł",
       "descriptionRequired": "Wprowadź opis",
@@ -287,9 +304,13 @@
     "networkError": "Błąd połączenia",
     "goHome": "Wróć na stronę główną"
   },
+  "footer": {
+    "terms": "Regulamin"
+  },
   "terms": {
     "title": "Regulamin",
     "subtitle": "Przeczytaj i zaakceptuj regulamin, aby kontynuować",
+    "lastUpdated": "Ostatnia aktualizacja: luty 2026",
     "accept": "Akceptuję",
     "decline": "Odrzuć",
     "scrollToAccept": "Przewiń w dół, aby zaakceptować",

@@ -27,13 +27,11 @@ export const signUp = async (
     email,
     displayName,
     role: 'user',
-    termsAcceptedAt: now,
     createdAt: now,
   };
 
   await setDoc(doc(db, 'users', firebaseUser.uid), {
     ...userData,
-    termsAcceptedAt: Timestamp.fromDate(now),
     createdAt: Timestamp.fromDate(now),
   });
 

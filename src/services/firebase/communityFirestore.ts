@@ -154,7 +154,13 @@ export const createCommunityCase = async (
 
 export const updateCommunityCase = async (
   caseId: string,
-  data: Partial<Pick<CommunityCase, 'title' | 'description' | 'images' | 'diagnosis' | 'status'>>
+  data: {
+    title?: string;
+    description?: string;
+    images?: CommunityCaseImage[];
+    diagnosis?: { text: string; histopathologyResult?: string };
+    status?: CommunityCase['status'];
+  }
 ): Promise<void> => {
   const docRef = doc(db, 'communityCases', caseId);
 

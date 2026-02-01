@@ -1,6 +1,7 @@
 import { initializeFirebaseAdmin } from "./utils/firebase-admin";
 import { clearEmulatorData } from "./utils/cleanup";
-import { seedTestData } from "./utils/seed";
+import { seedTestData, seedCommunityData } from "./utils/seed";
+import { testUsers } from "./fixtures/test-data/users";
 
 async function globalSetup() {
   console.log("Starting global setup...");
@@ -21,6 +22,16 @@ async function globalSetup() {
   try {
     const seededData = await seedTestData();
     console.log("Test data seeded:", seededData);
+
+    // Seed community data for the community user
+    const communityUserId = seededData.userIds[testUsers.community.email];
+    if (communityUserId) {
+      const communityCaseIds = await seedCommunityData(
+        communityUserId,
+        testUsers.community.displayName
+      );
+      console.log("Community cases seeded:", communityCaseIds);
+    }
   } catch (error) {
     console.log("Could not seed test data:", error);
   }

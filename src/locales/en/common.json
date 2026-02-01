@@ -5,7 +5,7 @@
   },
   "nav": {
     "home": "Home",
-    "levels": "Levels",
+    "levels": "Learning",
     "community": "Community",
     "profile": "Profile",
     "admin": "Admin Panel",
@@ -39,7 +39,22 @@
   "home": {
     "welcome": "Welcome to Dermatoscopy Academy",
     "description": "Develop your diagnostic skills through interactive tests and clinical cases.",
-    "startLearning": "Start learning"
+    "startLearning": "Start learning",
+    "features": {
+      "title": "Why Choose Our Platform?",
+      "interactive": {
+        "title": "Interactive Tests",
+        "description": "Practice with real dermatoscopy images and get instant feedback."
+      },
+      "cases": {
+        "title": "Clinical Cases",
+        "description": "Learn from annotated cases with detailed explanations."
+      },
+      "community": {
+        "title": "Community",
+        "description": "Share and discuss cases with fellow dermatologists."
+      }
+    }
   },
   "levels": {
     "title": "Levels",
@@ -231,6 +246,8 @@
     "histopathologyPlaceholder": "Enter histopathology result if available",
     "diagnosisNote": "The diagnosis will be hidden for 48 hours to allow discussion before reveal",
     "publishCase": "Publish Case",
+    "editCase": "Edit Case",
+    "updateCase": "Save Changes",
     "errors": {
       "titleRequired": "Please enter a title",
       "descriptionRequired": "Please enter a description",
@@ -287,9 +304,13 @@
     "networkError": "Connection error",
     "goHome": "Go to home page"
   },
+  "footer": {
+    "terms": "Terms and Conditions"
+  },
   "terms": {
     "title": "Terms and Conditions",
     "subtitle": "Please read and accept our terms to continue",
+    "lastUpdated": "Last updated: February 2026",
     "accept": "I Accept",
     "decline": "Decline",
     "scrollToAccept": "Scroll down to accept",

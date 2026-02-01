@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /// <reference types="vitest" />
+// @ts-nocheck - vitest types conflict with vite types (version mismatch in node_modules)
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';

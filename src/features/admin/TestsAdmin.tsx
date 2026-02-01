@@ -216,7 +216,7 @@ export function TestsAdmin() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={editingTest ? t('admin.edit') : t('admin.add')}
-        size="lg"
+        size="4xl"
       >
         <form onSubmit={handleSubmit} className="space-y-4" data-testid="test-form">
           <div>

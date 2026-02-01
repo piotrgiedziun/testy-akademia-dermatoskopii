@@ -150,7 +150,7 @@ export function LevelsAdmin() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={editingLevel ? t('admin.edit') : t('admin.add')}
-        size="lg"
+        size="4xl"
       >
         <form onSubmit={handleSubmit} className="space-y-4" data-testid="level-form">
           <Input

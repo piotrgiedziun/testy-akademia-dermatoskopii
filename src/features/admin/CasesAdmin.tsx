@@ -329,7 +329,7 @@ export function CasesAdmin() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={editingCase ? t('admin.edit') : t('admin.add')}
-        size="xl"
+        size="6xl"
       >
         <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto">
           <div className="grid grid-cols-2 gap-4">

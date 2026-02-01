@@ -178,6 +178,24 @@ export function CaseDetailPage() {
               {/* Actions */}
               {user && (
                 <div className="flex items-center gap-4 mt-4 pt-4 border-t flex-wrap">
+                  {/* Edit button - shown only to author */}
+                  {user.uid === caseData.authorId && (
+                    <Link
+                      to={`/community/case/${caseData.id}/edit`}
+                      className="text-sm text-primary hover:text-primary-dark flex items-center gap-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                      </svg>
+                      {t('common.edit')}
+                    </Link>
+                  )}
+
                   {/* Flag button - shown to all except author */}
                   {user.uid !== caseData.authorId && (
                     <button

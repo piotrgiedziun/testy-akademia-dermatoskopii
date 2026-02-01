@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Layout } from "@/components/layout";
@@ -16,8 +16,10 @@ export function CommunityCasesPage() {
   const [cases, setCases] = useState<CommunityCase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null);
   const [hasMore, setHasMore] = useState(true);
+
+  // Use ref to store lastDoc to avoid infinite loop in useCallback
+  const lastDocRef = useRef<DocumentSnapshot | null>(null);
 
   // Check if user has access
   const hasAccess = user?.role === 'admin' || user?.permissions?.casesAccess;
@@ -33,14 +35,14 @@ export function CommunityCasesPage() {
       try {
         const result = await getCommunityCases(
           10,
-          loadMore ? lastDoc || undefined : undefined
+          loadMore ? lastDocRef.current || undefined : undefined
         );
         if (loadMore) {
           setCases((prev) => [...prev, ...result.cases]);
         } else {
           setCases(result.cases);
         }
-        setLastDoc(result.lastDoc);
+        lastDocRef.current = result.lastDoc;
         setHasMore(result.cases.length === 10);
       } catch (error) {
         console.error("Error fetching cases:", error);
@@ -49,7 +51,7 @@ export function CommunityCasesPage() {
         setIsLoadingMore(false);
       }
     },
-    [lastDoc]
+    []
   );
 
   useEffect(() => {

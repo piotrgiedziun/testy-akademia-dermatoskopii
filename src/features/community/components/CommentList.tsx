@@ -265,7 +265,7 @@ export function CommentList({
         size="full"
       >
         {fullscreenAnnotation && (
-          <div className="relative bg-black rounded-lg">
+          <div className="relative bg-black rounded-lg min-h-[70vh] overflow-hidden">
             <TransformWrapper
               initialScale={1}
               minScale={0.5}
@@ -280,7 +280,7 @@ export function CommentList({
                     wrapperStyle={{ width: '100%', height: '100%' }}
                     contentStyle={{ width: '100%', height: '100%' }}
                   >
-                    <div className="flex items-center justify-center">
+                    <div className="w-full min-h-[70vh] flex items-center justify-center">
                       <DrawingCanvas
                         imageUrl={fullscreenAnnotation.imageUrl}
                         annotations={fullscreenAnnotation.drawings}

@@ -24,9 +24,11 @@ import {
   CommunityCasesPage,
   CaseDetailPage,
   CreateCasePage,
+  EditCasePage,
   UserProfilePage,
   LeaderboardPage,
 } from '@/features/community';
+import { TermsPage } from '@/features/legal';
 
 function App() {
   const { initialize, isInitialized, user, acceptTerms, logout } = useAuthStore();
@@ -63,6 +65,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/terms" element={<TermsPage />} />
 
         {/* Protected routes */}
         <Route
@@ -128,6 +131,14 @@ function App() {
           element={
             <ProtectedRoute requireCasesAccess>
               <CreateCasePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/community/case/:caseId/edit"
+          element={
+            <ProtectedRoute requireCasesAccess>
+              <EditCasePage />
             </ProtectedRoute>
           }
         />
