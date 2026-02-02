@@ -55,9 +55,8 @@ function App() {
   };
 
   return (
-    <ReCaptchaProvider>
-      <BrowserRouter>
-        <TermsModal
+    <BrowserRouter>
+      <TermsModal
         isOpen={needsTermsAcceptance || false}
         onAccept={handleAcceptTerms}
         onDecline={handleDeclineTerms}
@@ -65,8 +64,8 @@ function App() {
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<ReCaptchaProvider><LoginPage /></ReCaptchaProvider>} />
+        <Route path="/register" element={<ReCaptchaProvider><RegisterPage /></ReCaptchaProvider>} />
         <Route path="/terms" element={<TermsPage />} />
 
         {/* Protected routes */}
@@ -182,8 +181,7 @@ function App() {
         {/* 404 */}
         <Route path="*" element={<HomePage />} />
       </Routes>
-      </BrowserRouter>
-    </ReCaptchaProvider>
+    </BrowserRouter>
   );
 }
 

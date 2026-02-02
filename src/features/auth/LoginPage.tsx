@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Layout } from '@/components/layout';
 import { Button, Input, Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 import { useAuthStore } from '@/stores';
+import { useReCaptcha } from '@/components/ReCaptchaProvider';
 
 function GoogleIcon({ className }: { className?: string }) {
   return (
@@ -32,13 +33,23 @@ export function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { login, loginWithGoogle, isLoading, error, clearError } = useAuthStore();
+  const { executeReCaptcha, isReady } = useReCaptcha();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [validationError, setValidationError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     clearError();
+    setValidationError('');
+
+    // Execute reCAPTCHA verification
+    const recaptchaToken = await executeReCaptcha('login');
+    if (!recaptchaToken) {
+      setValidationError(t('auth.errors.recaptchaFailed'));
+      return;
+    }
 
     try {
       await login(email, password);
@@ -69,9 +80,9 @@ export function LoginPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {error && (
+              {(error || validationError) && (
                 <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm">
-                  {error}
+                  {error || validationError}
                 </div>
               )}
 
@@ -97,6 +108,7 @@ export function LoginPage() {
                 type="submit"
                 fullWidth
                 isLoading={isLoading}
+                disabled={!isReady}
               >
                 {t('auth.login')}
               </Button>
