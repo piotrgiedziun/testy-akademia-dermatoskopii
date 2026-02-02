@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuthStore } from '@/stores';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { ReCaptchaProvider } from '@/components/ReCaptchaProvider';
 import { Loading, TermsModal } from '@/components/ui';
 
 // Pages
@@ -54,8 +55,9 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
-      <TermsModal
+    <ReCaptchaProvider>
+      <BrowserRouter>
+        <TermsModal
         isOpen={needsTermsAcceptance || false}
         onAccept={handleAcceptTerms}
         onDecline={handleDeclineTerms}
@@ -180,7 +182,8 @@ function App() {
         {/* 404 */}
         <Route path="*" element={<HomePage />} />
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ReCaptchaProvider>
   );
 }
 

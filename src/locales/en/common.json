@@ -33,6 +33,7 @@
       "emailInUse": "Email is already in use",
       "weakPassword": "Password is too weak",
       "passwordMismatch": "Passwords don't match",
+      "recaptchaFailed": "Security verification failed. Please try again.",
       "generic": "An error occurred. Please try again."
     }
   },

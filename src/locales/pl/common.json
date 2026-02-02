@@ -33,6 +33,7 @@
       "emailInUse": "Email jest już używany",
       "weakPassword": "Hasło jest za słabe",
       "passwordMismatch": "Hasła nie są identyczne",
+      "recaptchaFailed": "Weryfikacja bezpieczeństwa nie powiodła się. Spróbuj ponownie.",
       "generic": "Wystąpił błąd. Spróbuj ponownie."
     }
   },

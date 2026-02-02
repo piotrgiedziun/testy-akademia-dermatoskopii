@@ -4,11 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { Layout } from '@/components/layout';
 import { Button, Input, Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 import { useAuthStore } from '@/stores';
+import { useReCaptcha } from '@/components/ReCaptchaProvider';
 
 export function RegisterPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { register, isLoading, error, clearError } = useAuthStore();
+  const { executeReCaptcha, isReady } = useReCaptcha();
 
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,6 +30,13 @@ export function RegisterPage() {
 
     if (password.length < 6) {
       setValidationError(t('auth.errors.weakPassword'));
+      return;
+    }
+
+    // Execute reCAPTCHA verification
+    const recaptchaToken = await executeReCaptcha('register');
+    if (!recaptchaToken) {
+      setValidationError(t('auth.errors.recaptchaFailed'));
       return;
     }
 
@@ -97,6 +106,7 @@ export function RegisterPage() {
                 type="submit"
                 fullWidth
                 isLoading={isLoading}
+                disabled={!isReady}
               >
                 {t('auth.register')}
               </Button>
