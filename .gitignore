@@ -50,6 +50,7 @@ playwright/.cache/
 
 # Generated outputs
 dist-node/
+functions/lib/
 
 # TypeScript build info
 *.tsbuildinfo

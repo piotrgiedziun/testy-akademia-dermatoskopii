@@ -1,5 +1,6 @@
 import { initializeApp, applicationDefault } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { getAuth } from 'firebase-admin/auth';
 
 const projectId = process.env.FIREBASE_PROJECT_ID || process.env.GCLOUD_PROJECT;
 
@@ -15,6 +16,7 @@ initializeApp({
 });
 
 const db = getFirestore();
+const auth = getAuth();
 
 async function setAdmin(email: string) {
   console.log(`Setting admin role for: ${email}`);
@@ -29,7 +31,11 @@ async function setAdmin(email: string) {
 
   for (const doc of snapshot.docs) {
     await doc.ref.update({ role: 'admin' });
-    console.log(`✅ User ${doc.id} is now admin`);
+
+    // Also set custom claim for Storage rules
+    await auth.setCustomUserClaims(doc.id, { admin: true });
+
+    console.log(`✅ User ${doc.id} is now admin (Firestore role + Auth custom claim)`);
   }
 }
 

@@ -60,6 +60,12 @@ jobs:
       - name: Build application
         run: npm run build
 
+      - name: Install functions dependencies
+        run: npm ci --prefix functions
+
+      - name: Build functions
+        run: npm run build --prefix functions
+
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -67,6 +73,13 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
           channelId: live
+
+      - name: Deploy Cloud Functions
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
 
       - name: Deploy Firestore Rules
         uses: w9jds/firebase-action@master
