@@ -7,7 +7,7 @@ import {
   getUnresolvedFlags,
   resolveFlag,
   getCommunityCase,
-  getCaseComments,
+  getCaseCommentById,
   deleteCommunityCase,
   deleteCaseComment,
 } from '@/services/firebase/communityFirestore';
@@ -41,8 +41,7 @@ export function ModerationDashboard() {
           if (flag.contentType === 'case') {
             content.case = (await getCommunityCase(flag.contentId)) || undefined;
           } else {
-            const comments = await getCaseComments(flag.caseId);
-            content.comment = comments.find((c) => c.id === flag.contentId);
+            content.comment = (await getCaseCommentById(flag.caseId, flag.contentId)) || undefined;
             content.case = (await getCommunityCase(flag.caseId)) || undefined;
           }
 

@@ -8,9 +8,11 @@ interface ImageViewerProps {
   images: CaseImage[];
   onImageLoad?: () => void;
   children?: ReactNode;
+  /** Additional controls to render next to zoom buttons (outside transform) */
+  controls?: ReactNode;
 }
 
-export function ImageViewer({ images, onImageLoad, children }: ImageViewerProps) {
+export function ImageViewer({ images, onImageLoad, children, controls }: ImageViewerProps) {
   const { t } = useTranslation();
   const [currentImageType, setCurrentImageType] = useState<'polarized' | 'non-polarized'>(
     images[0]?.type || 'polarized'
@@ -127,6 +129,7 @@ export function ImageViewer({ images, onImageLoad, children }: ImageViewerProps)
                     />
                   </svg>
                 </button>
+                {controls}
               </div>
 
               {hasBothTypes && (

@@ -54,6 +54,7 @@ export interface Annotation {
   type: AnnotationType;
   coords: AnnotationCoords;
   label: LocalizedString;
+  color?: string;  // Optional for backward compatibility with legacy data
 }
 
 // Case/Question in a test

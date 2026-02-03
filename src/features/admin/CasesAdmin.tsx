@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { Card, Button, Input, Modal, Loading } from '@/components/ui';
 import { db, storage } from '@/services/firebase/config';
 import {
@@ -12,7 +13,9 @@ import {
   orderBy,
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import type { Case, Test, TestAnswer } from '@/types';
+import { DrawingCanvas, DrawingToolbar } from '@/components/annotations';
+import type { DrawingTool } from '@/components/annotations';
+import type { Annotation, Case, Test, TestAnswer, CommentAnnotation } from '@/types';
 
 export function CasesAdmin() {
   const { t, i18n } = useTranslation();
@@ -23,6 +26,13 @@ export function CasesAdmin() {
   const [editingCase, setEditingCase] = useState<Case | null>(null);
   const [uploading, setUploading] = useState(false);
   const [filterTestId, setFilterTestId] = useState<string>('');
+  const [zoomImageUrl, setZoomImageUrl] = useState<string | null>(null);
+
+  // Annotation state - using CommentAnnotation for drawing, convert to Annotation when saving
+  const [drawingAnnotations, setDrawingAnnotations] = useState<CommentAnnotation[]>([]);
+  const [showAnnotationEditor, setShowAnnotationEditor] = useState(false);
+  const [selectedTool, setSelectedTool] = useState<DrawingTool>('arrow');
+  const [selectedColor, setSelectedColor] = useState('#ef4444');
 
   const [formData, setFormData] = useState({
     testId: '',
@@ -103,7 +113,9 @@ export function CasesAdmin() {
   ) => {
     setUploading(true);
     try {
-      const storageRef = ref(storage, `cases/${Date.now()}_${file.name}`);
+      const extension = file.name.split('.').pop() || 'jpg';
+      const uuid = crypto.randomUUID();
+      const storageRef = ref(storage, `cases/${uuid}.${extension}`);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
       setFormData({ ...formData, [field]: url });
@@ -134,6 +146,26 @@ export function CasesAdmin() {
         pitfallPl: caseItem.pitfall?.pl || '',
         pitfallEn: caseItem.pitfall?.en || '',
       });
+      // Convert Annotation[] to CommentAnnotation[] for the drawing canvas
+      const drawings: CommentAnnotation[] = (caseItem.annotations || []).map((ann) => ({
+        type: ann.type === 'rect' ? 'area' : ann.type,
+        coords: {
+          x: ann.coords.x,
+          y: ann.coords.y,
+          endX: ann.coords.endX,
+          endY: ann.coords.endY,
+          radius: ann.coords.radius,
+          points: ann.type === 'rect' ? [
+            { x: ann.coords.x, y: ann.coords.y },
+            { x: ann.coords.x + (ann.coords.width || 0), y: ann.coords.y },
+            { x: ann.coords.x + (ann.coords.width || 0), y: ann.coords.y + (ann.coords.height || 0) },
+            { x: ann.coords.x, y: ann.coords.y + (ann.coords.height || 0) },
+          ] : undefined,
+        },
+        color: ann.color || '#ef4444',  // Use saved color or fallback for legacy data
+        strokeStyle: 'dashed',
+      }));
+      setDrawingAnnotations(drawings);
     } else {
       setEditingCase(null);
       setFormData({
@@ -151,6 +183,7 @@ export function CasesAdmin() {
         pitfallPl: '',
         pitfallEn: '',
       });
+      setDrawingAnnotations([]);
     }
     setIsModalOpen(true);
   };
@@ -196,7 +229,35 @@ export function CasesAdmin() {
         formData.pitfallPl || formData.pitfallEn
           ? { pl: formData.pitfallPl, en: formData.pitfallEn }
           : null,
-      annotations: editingCase?.annotations || null,
+      // Convert CommentAnnotation[] back to Annotation[] format
+      // Filter out undefined values as Firestore doesn't accept them
+      annotations: drawingAnnotations.length > 0
+        ? drawingAnnotations.map((drawing): Annotation => {
+            const coords: Annotation['coords'] = {
+              x: drawing.coords.x,
+              y: drawing.coords.y,
+            };
+            if (drawing.coords.endX !== undefined) coords.endX = drawing.coords.endX;
+            if (drawing.coords.endY !== undefined) coords.endY = drawing.coords.endY;
+            if (drawing.coords.radius !== undefined) coords.radius = drawing.coords.radius;
+
+            // For 'area' type (rectangles), calculate width and height from points array
+            if (drawing.type === 'area' && drawing.coords.points && drawing.coords.points.length >= 3) {
+              const points = drawing.coords.points;
+              const width = Math.abs(points[1].x - points[0].x);
+              const height = Math.abs(points[2].y - points[0].y);
+              coords.width = width;
+              coords.height = height;
+            }
+
+            return {
+              type: drawing.type === 'area' ? 'rect' : drawing.type as 'circle' | 'arrow',
+              coords,
+              label: { pl: '', en: '' },
+              color: drawing.color,  // Preserve the color when saving
+            };
+          })
+        : null,
     };
 
     try {
@@ -246,6 +307,12 @@ export function CasesAdmin() {
     });
   };
 
+  const handleCloseModal = () => {
+    if (confirm(t('admin.confirmCloseModal'))) {
+      setIsModalOpen(false);
+    }
+  };
+
   if (isLoading) {
     return <Loading size="lg" text={t('common.loading')} />;
   }
@@ -283,7 +350,8 @@ export function CasesAdmin() {
                 <img
                   src={caseItem.images[0].url}
                   alt=""
-                  className="w-20 h-20 object-cover rounded-lg"
+                  className="w-32 h-32 object-contain bg-gray-100 rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => setZoomImageUrl(caseItem.images[0].url)}
                 />
               )}
               <div className="flex-1">
@@ -327,7 +395,7 @@ export function CasesAdmin() {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         title={editingCase ? t('admin.edit') : t('admin.add')}
         size="6xl"
       >
@@ -379,7 +447,8 @@ export function CasesAdmin() {
                 <img
                   src={formData.polarizedUrl}
                   alt="Polarized"
-                  className="w-full h-32 object-cover rounded-lg"
+                  className="w-full h-48 object-contain bg-gray-100 rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => setZoomImageUrl(formData.polarizedUrl)}
                 />
               )}
             </div>
@@ -400,7 +469,8 @@ export function CasesAdmin() {
                 <img
                   src={formData.nonPolarizedUrl}
                   alt="Non-polarized"
-                  className="w-full h-32 object-cover rounded-lg"
+                  className="w-full h-48 object-contain bg-gray-100 rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => setZoomImageUrl(formData.nonPolarizedUrl)}
                 />
               )}
             </div>
@@ -535,12 +605,65 @@ export function CasesAdmin() {
             />
           </div>
 
+          {/* Annotations Section */}
+          <div className="border-t pt-4">
+            <h3 className="text-lg font-medium text-charcoal mb-2">
+              {t('admin.annotations')}
+            </h3>
+            <p className="text-sm text-gray-500 mb-4">
+              {t('admin.annotationsDescription')}
+            </p>
+
+            {(formData.polarizedUrl || formData.nonPolarizedUrl) ? (
+              <div className="space-y-3">
+                {/* Annotation preview */}
+                {drawingAnnotations.length > 0 && (
+                  <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                    <svg className="h-5 w-5 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
+                    </svg>
+                    <span className="text-sm text-gray-600">
+                      {drawingAnnotations.length} annotation(s)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setShowAnnotationEditor(true)}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      {t('common.edit')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDrawingAnnotations([])}
+                      className="text-sm text-red-500 hover:underline"
+                    >
+                      {t('common.delete')}
+                    </button>
+                  </div>
+                )}
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowAnnotationEditor(true)}
+                >
+                  {drawingAnnotations.length > 0 ? t('common.edit') : t('community.addAnnotation')}
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400 italic p-4 border rounded-lg text-center">
+                {t('admin.selectImage')}
+              </p>
+            )}
+          </div>
+
           <div className="flex gap-3 pt-4">
             <Button
               type="button"
               variant="secondary"
               fullWidth
-              onClick={() => setIsModalOpen(false)}
+              onClick={handleCloseModal}
             >
               {t('admin.cancel')}
             </Button>
@@ -549,6 +672,117 @@ export function CasesAdmin() {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* Image Zoom Modal */}
+      <Modal
+        isOpen={!!zoomImageUrl}
+        onClose={() => setZoomImageUrl(null)}
+        title={t('admin.imagePreview')}
+        size="6xl"
+      >
+        {zoomImageUrl && (
+          <div className="relative bg-black rounded-lg overflow-hidden">
+            <TransformWrapper
+              initialScale={1}
+              minScale={0.5}
+              maxScale={5}
+              centerOnInit
+              wheel={{ step: 0.1 }}
+            >
+              {({ zoomIn, zoomOut, resetTransform }) => (
+                <>
+                  <TransformComponent
+                    wrapperStyle={{ width: '100%', height: '100%' }}
+                    contentStyle={{ width: '100%', height: '100%' }}
+                  >
+                    <div className="flex items-center justify-center min-h-[60vh]">
+                      <img
+                        src={zoomImageUrl}
+                        alt=""
+                        className="max-w-full max-h-[70vh] object-contain"
+                        draggable={false}
+                      />
+                    </div>
+                  </TransformComponent>
+
+                  <div className="absolute bottom-4 left-4 flex gap-2">
+                    <button
+                      onClick={() => zoomOut()}
+                      className="p-2 bg-white bg-opacity-90 rounded-lg shadow hover:bg-opacity-100 transition-colors"
+                      aria-label="Zoom out"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => zoomIn()}
+                      className="p-2 bg-white bg-opacity-90 rounded-lg shadow hover:bg-opacity-100 transition-colors"
+                      aria-label="Zoom in"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => resetTransform()}
+                      className="p-2 bg-white bg-opacity-90 rounded-lg shadow hover:bg-opacity-100 transition-colors"
+                      aria-label="Reset zoom"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </>
+              )}
+            </TransformWrapper>
+          </div>
+        )}
+      </Modal>
+
+      {/* Annotation Editor Modal */}
+      <Modal
+        isOpen={showAnnotationEditor}
+        onClose={() => setShowAnnotationEditor(false)}
+        title={t('community.annotateImage')}
+        size="lg"
+      >
+        <div className="space-y-4">
+          {/* Drawing toolbar */}
+          <DrawingToolbar
+            selectedTool={selectedTool}
+            selectedColor={selectedColor}
+            onToolChange={setSelectedTool}
+            onColorChange={setSelectedColor}
+          />
+
+          {/* Drawing canvas */}
+          {(formData.polarizedUrl || formData.nonPolarizedUrl) && (
+            <DrawingCanvas
+              imageUrl={formData.polarizedUrl || formData.nonPolarizedUrl}
+              annotations={drawingAnnotations}
+              onAnnotationsChange={setDrawingAnnotations}
+              selectedTool={selectedTool}
+              selectedColor={selectedColor}
+            />
+          )}
+
+          <div className="flex justify-end gap-3 pt-4">
+            <Button
+              variant="secondary"
+              onClick={() => setShowAnnotationEditor(false)}
+            >
+              {t('common.close')}
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

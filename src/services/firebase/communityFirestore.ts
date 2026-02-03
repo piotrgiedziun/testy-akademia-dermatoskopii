@@ -326,6 +326,16 @@ function convertCommentDoc(doc: DocumentSnapshot, caseId: string): CaseComment {
   };
 }
 
+export const getCaseCommentById = async (
+  caseId: string,
+  commentId: string
+): Promise<CaseComment | null> => {
+  const docRef = doc(db, 'communityCases', caseId, 'comments', commentId);
+  const snapshot = await getDoc(docRef);
+  if (!snapshot.exists()) return null;
+  return convertCommentDoc(snapshot, caseId);
+};
+
 // ============ CONTENT FLAGS ============
 
 export const createContentFlag = async (

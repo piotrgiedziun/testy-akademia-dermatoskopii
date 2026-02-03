@@ -32,6 +32,11 @@ dist-ssr
 
 # Firebase
 .firebase
+**/service-account*.json
+
+# Watermark script
+scripts/watermark/ckpts/
+scripts/watermark/.venv/
 firebase-debug.log
 firestore-debug.log
 ui-debug.log

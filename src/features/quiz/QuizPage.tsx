@@ -99,6 +99,8 @@ export function QuizPage() {
         test={test}
         onNext={handleNext}
         isLastQuestion={currentCaseIndex >= cases.length - 1}
+        currentIndex={currentCaseIndex}
+        totalQuestions={cases.length}
       />
     );
   }

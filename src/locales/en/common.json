@@ -177,7 +177,19 @@
     "noAdditionalInfo": "No additional information provided",
     "isAdmin": "Admin",
     "makeAdmin": "Make admin",
-    "cannotDemoteSelf": "You cannot remove your own admin privileges"
+    "cannotDemoteSelf": "You cannot remove your own admin privileges",
+    "imagePreview": "Image Preview",
+    "annotations": "Annotations",
+    "annotationsDescription": "Add annotations to the image that will be visible in the explanation",
+    "annotationCircle": "Circle",
+    "annotationRect": "Rectangle",
+    "annotationArrow": "Arrow",
+    "drawingTool": "Tool",
+    "saveAnnotation": "Add annotation",
+    "annotationsList": "Annotations list",
+    "noLabel": "No label",
+    "selectImage": "Select image to annotate",
+    "confirmCloseModal": "Are you sure you want to close? Unsaved changes will be lost."
   },
   "common": {
     "loading": "Loading...",
