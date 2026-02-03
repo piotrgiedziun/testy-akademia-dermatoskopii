@@ -62,6 +62,17 @@ export const updateUserPermissions = async (
   });
 };
 
+export const updateUserRole = async (
+  userId: string,
+  role: 'user' | 'admin'
+): Promise<void> => {
+  const docRef = doc(db, 'users', userId);
+  const snapshot = await getDoc(docRef);
+  if (!snapshot.exists()) throw new Error('User not found');
+
+  await updateDoc(docRef, { role });
+};
+
 export const getUserById = async (userId: string): Promise<User | null> => {
   const docRef = doc(db, 'users', userId);
   const snapshot = await getDoc(docRef);

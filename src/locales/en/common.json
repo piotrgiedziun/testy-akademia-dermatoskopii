@@ -174,7 +174,10 @@
     "rejectReasonPrompt": "Enter a reason for rejection (optional):",
     "noPendingRequests": "No pending requests",
     "allRequestsReviewed": "All access requests have been reviewed",
-    "noAdditionalInfo": "No additional information provided"
+    "noAdditionalInfo": "No additional information provided",
+    "isAdmin": "Admin",
+    "makeAdmin": "Make admin",
+    "cannotDemoteSelf": "You cannot remove your own admin privileges"
   },
   "common": {
     "loading": "Loading...",

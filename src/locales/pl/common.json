@@ -174,7 +174,10 @@
     "rejectReasonPrompt": "Podaj powód odrzucenia (opcjonalne):",
     "noPendingRequests": "Brak oczekujących próśb",
     "allRequestsReviewed": "Wszystkie prośby o dostęp zostały rozpatrzone",
-    "noAdditionalInfo": "Nie podano dodatkowych informacji"
+    "noAdditionalInfo": "Nie podano dodatkowych informacji",
+    "isAdmin": "Admin",
+    "makeAdmin": "Nadaj admina",
+    "cannotDemoteSelf": "Nie możesz usunąć sobie uprawnień admina"
   },
   "common": {
     "loading": "Ładowanie...",

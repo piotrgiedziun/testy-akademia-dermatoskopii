@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Button, Input, Loading } from '@/components/ui';
-import { getAllUsers, updateUserPermissions } from '@/services/firebase/communityFirestore';
+import { getAllUsers, updateUserPermissions, updateUserRole } from '@/services/firebase/communityFirestore';
+import { useAuthStore } from '@/stores';
 import type { User } from '@/types';
 
 export function UsersAdmin() {
   const { t } = useTranslation();
+  const { user: currentUser } = useAuthStore();
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -64,6 +66,28 @@ export function UsersAdmin() {
     }
   };
 
+  const handleToggleAdmin = async (user: User) => {
+    // Prevent self-demotion
+    if (user.uid === currentUser?.uid) {
+      return;
+    }
+
+    setUpdatingUserId(user.uid);
+    try {
+      const newRole = user.role === 'admin' ? 'user' : 'admin';
+      await updateUserRole(user.uid, newRole);
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.uid === user.uid ? { ...u, role: newRole } : u
+        )
+      );
+    } catch (error) {
+      console.error('Error updating role:', error);
+    } finally {
+      setUpdatingUserId(null);
+    }
+  };
+
   const filteredUsers = users.filter(
     (user) =>
       user.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -107,11 +131,16 @@ export function UsersAdmin() {
               </div>
 
               <div className="flex items-center gap-2">
-                {user.role === 'admin' && (
-                  <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">
-                    Admin
-                  </span>
-                )}
+                <Button
+                  variant={user.role === 'admin' ? 'primary' : 'outline'}
+                  size="sm"
+                  onClick={() => handleToggleAdmin(user)}
+                  disabled={updatingUserId === user.uid || user.uid === currentUser?.uid}
+                  data-testid="admin-toggle"
+                  title={user.uid === currentUser?.uid ? t('admin.cannotDemoteSelf') : undefined}
+                >
+                  {user.role === 'admin' ? t('admin.isAdmin') : t('admin.makeAdmin')}
+                </Button>
 
                 <Button
                   variant={user.permissions?.casesAccess ? 'primary' : 'outline'}
