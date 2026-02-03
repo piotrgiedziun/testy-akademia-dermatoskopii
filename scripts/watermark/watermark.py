@@ -12,7 +12,8 @@ import tempfile
 from pathlib import Path
 
 import firebase_admin
-from firebase_admin import credentials, storage
+from firebase_admin import credentials, storage, firestore
+from urllib.parse import quote
 from PIL import Image
 import torch
 import torchvision.transforms as T
@@ -103,6 +104,47 @@ def list_case_images(bucket) -> list:
     return image_blobs
 
 
+def update_firestore_urls(db, old_path: str, new_blob) -> int:
+    """Update Firestore documents that reference the old image path.
+
+    Returns number of documents updated.
+    """
+    # Make the new blob publicly accessible
+    new_blob.make_public()
+    new_url = new_blob.public_url
+
+    # Search for documents with the old path in their image URLs
+    # The old path might be URL-encoded in the stored URL
+    old_filename = Path(old_path).name
+
+    updated = 0
+    cases = db.collection('cases').stream()
+
+    for case in cases:
+        data = case.to_dict()
+        images = data.get('images', [])
+        if not images:
+            continue
+
+        updated_images = []
+        needs_update = False
+
+        for img in images:
+            url = img.get('url', '')
+            # Check if this URL references our old file
+            if old_filename in url and 'firebasestorage.googleapis.com' in url:
+                updated_images.append({**img, 'url': new_url})
+                needs_update = True
+            else:
+                updated_images.append(img)
+
+        if needs_update:
+            db.collection('cases').document(case.id).update({'images': updated_images})
+            updated += 1
+
+    return updated
+
+
 def apply_watermark(model, input_path: Path, output_path: Path, msg_tensor: torch.Tensor) -> bool:
     """Apply VideoSeal watermark to an image with custom message."""
     try:
@@ -123,8 +165,8 @@ def apply_watermark(model, input_path: Path, output_path: Path, msg_tensor: torc
         return False
 
 
-def process_images(bucket, blobs: list, model, msg_tensor: torch.Tensor, dry_run: bool = False, force: bool = False):
-    """Process all images: download, watermark, and upload."""
+def process_images(bucket, db, blobs: list, model, msg_tensor: torch.Tensor, dry_run: bool = False, force: bool = False):
+    """Process all images: download, watermark, upload, and update Firestore."""
     total = len(blobs)
     success = 0
     skipped = 0
@@ -177,6 +219,12 @@ def process_images(bucket, blobs: list, model, msg_tensor: torch.Tensor, dry_run
                 print(f"  Uploading to: {new_blob_name}")
                 new_blob.upload_from_filename(str(output_path), content_type="image/png")
 
+                # Update Firestore references and make blob public
+                print(f"  Updating Firestore references...")
+                updated_docs = update_firestore_urls(db, blob.name, new_blob)
+                if updated_docs > 0:
+                    print(f"  Updated {updated_docs} Firestore document(s)")
+
                 # Delete old blob if extension changed
                 if blob.name != new_blob_name:
                     print(f"  Deleting original: {blob.name}")
@@ -223,6 +271,7 @@ def main():
     # Initialize Firebase
     print("\nInitializing Firebase...")
     bucket = init_firebase()
+    db = firestore.client()
     print(f"Connected to bucket: {BUCKET_NAME}")
 
     # Load VideoSeal model
@@ -249,7 +298,7 @@ def main():
         print(f"Limited to {len(blobs)} images")
 
     # Process images
-    process_images(bucket, blobs, model, msg_tensor, dry_run=args.dry_run, force=args.force)
+    process_images(bucket, db, blobs, model, msg_tensor, dry_run=args.dry_run, force=args.force)
 
 
 if __name__ == "__main__":
