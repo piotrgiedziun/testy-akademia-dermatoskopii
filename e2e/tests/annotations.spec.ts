@@ -95,9 +95,6 @@ test.describe("Annotations", () => {
     const overlayCount = await annotationOverlay.count();
 
     if (overlayCount > 0) {
-      // Verify the SVG overlay exists and has correct structure
-      const svgElement = annotationOverlay.locator("svg").first();
-
       // Check that viewBox is set (dimensions are loaded)
       const viewBox = await annotationOverlay.getAttribute("viewBox");
       expect(viewBox).toBeTruthy();

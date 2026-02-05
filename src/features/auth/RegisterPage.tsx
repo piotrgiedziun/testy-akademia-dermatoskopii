@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Layout } from '@/components/layout';
 import { Button, Input, Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 import { useAuthStore } from '@/stores';
-import { useReCaptcha } from '@/components/ReCaptchaProvider';
+import { useReCaptcha } from '@/components/useReCaptcha';
 
 export function RegisterPage() {
   const { t } = useTranslation();

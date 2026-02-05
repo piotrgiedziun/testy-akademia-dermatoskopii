@@ -1,17 +1,6 @@
-import { ReactNode, createContext, useContext, useCallback } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-
-interface ReCaptchaContextValue {
-  executeReCaptcha: (action: string) => Promise<string | null>;
-  isEnabled: boolean;
-  isReady: boolean;
-}
-
-const ReCaptchaContext = createContext<ReCaptchaContextValue>({
-  executeReCaptcha: async () => 'disabled',
-  isEnabled: false,
-  isReady: true,
-});
+import { ReCaptchaContext } from './ReCaptchaContext';
 
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '';
 const USE_EMULATORS = import.meta.env.VITE_USE_EMULATORS === 'true';
@@ -89,9 +78,4 @@ export function ReCaptchaProvider({ children }: { children: ReactNode }) {
       <ReCaptchaContextProvider>{children}</ReCaptchaContextProvider>
     </GoogleReCaptchaProvider>
   );
-}
-
-// Hook to use reCAPTCHA
-export function useReCaptcha() {
-  return useContext(ReCaptchaContext);
 }
