@@ -25,7 +25,7 @@ export function CommentList({
 }: CommentListProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
-  const [expandedAnnotations, setExpandedAnnotations] = useState<Set<string>>(new Set());
+  const [collapsedAnnotations, setCollapsedAnnotations] = useState<Set<string>>(new Set());
   const [flaggingCommentId, setFlaggingCommentId] = useState<string | null>(null);
   const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null);
   const [fullscreenAnnotation, setFullscreenAnnotation] = useState<{
@@ -66,7 +66,7 @@ export function CommentList({
   };
 
   const toggleAnnotation = (commentId: string) => {
-    setExpandedAnnotations((prev) => {
+    setCollapsedAnnotations((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(commentId)) {
         newSet.delete(commentId);
@@ -130,12 +130,12 @@ export function CommentList({
                     >
                       <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
                     </svg>
-                    {expandedAnnotations.has(comment.id)
-                      ? t('community.hideAnnotation')
-                      : t('community.showAnnotation')}
+                    {collapsedAnnotations.has(comment.id)
+                      ? t('community.showAnnotation')
+                      : t('community.hideAnnotation')}
                   </button>
 
-                  {expandedAnnotations.has(comment.id) && (
+                  {!collapsedAnnotations.has(comment.id) && (
                     <div
                       className="mt-2 rounded-lg overflow-hidden max-w-lg cursor-pointer"
                       onClick={() =>

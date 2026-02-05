@@ -21,12 +21,18 @@ export function Layout({ children, showHeader = true, fullWidth = false }: Layou
         {children}
       </main>
       <footer className="border-t border-gray-200 bg-white py-4">
-        <div className="max-w-7xl mx-auto px-4 flex justify-center">
+        <div className="max-w-7xl mx-auto px-4 flex justify-center gap-4">
           <Link
             to="/terms"
             className="text-sm text-gray-500 hover:text-primary transition-colors"
           >
             {t('footer.terms')}
+          </Link>
+          <Link
+            to="/privacy"
+            className="text-sm text-gray-500 hover:text-primary transition-colors"
+          >
+            {t('footer.privacy')}
           </Link>
         </div>
       </footer>

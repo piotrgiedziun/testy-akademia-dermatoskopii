@@ -197,7 +197,7 @@ export const addAnswerToAttempt = async (
   const newAnswers = [...currentAnswers, answer];
   const correctCount = newAnswers.filter((a) => a.correct).length;
   const score = correctCount * pointsPerCorrect;
-  const accuracy = (correctCount / newAnswers.length) * 100;
+  const accuracy = Math.round((correctCount / newAnswers.length) * 10000) / 100;
 
   await updateTestAttempt(userId, attemptId, {
     answers: newAnswers,
@@ -235,7 +235,7 @@ export const completeTestAttempt = async (
 ): Promise<void> => {
   const correctCount = answers.filter((a) => a.correct).length;
   const score = correctCount * pointsPerCorrect;
-  const accuracy = (correctCount / answers.length) * 100;
+  const accuracy = Math.round((correctCount / answers.length) * 10000) / 100;
   const totalTimeMs = answers.reduce((sum, a) => sum + a.timeSpent * 1000, 0);
 
   // Update the attempt

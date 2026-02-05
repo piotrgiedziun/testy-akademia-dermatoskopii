@@ -29,7 +29,7 @@ import {
   UserProfilePage,
   LeaderboardPage,
 } from '@/features/community';
-import { TermsPage } from '@/features/legal';
+import { TermsPage, PrivacyPolicyPage } from '@/features/legal';
 
 function App() {
   const { initialize, isInitialized, user, acceptTerms, logout } = useAuthStore();
@@ -67,6 +67,7 @@ function App() {
         <Route path="/login" element={<ReCaptchaProvider><LoginPage /></ReCaptchaProvider>} />
         <Route path="/register" element={<ReCaptchaProvider><RegisterPage /></ReCaptchaProvider>} />
         <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
 
         {/* Protected routes */}
         <Route

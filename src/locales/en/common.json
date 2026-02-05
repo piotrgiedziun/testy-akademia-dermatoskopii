@@ -321,7 +321,8 @@
     "goHome": "Go to home page"
   },
   "footer": {
-    "terms": "Terms and Conditions"
+    "terms": "Terms and Conditions",
+    "privacy": "Privacy Policy"
   },
   "terms": {
     "title": "Terms and Conditions",
@@ -342,5 +343,21 @@
     "section5Content": "When participating in community features, you agree to treat other users with respect, share content that is medically accurate to the best of your knowledge, and refrain from posting inappropriate or offensive material.",
     "section6Title": "6. Privacy",
     "section6Content": "We collect and process your personal data in accordance with our Privacy Policy. By using this service, you consent to the collection and use of information as described in our Privacy Policy."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: February 2026",
+    "section1Title": "1. Data Controller",
+    "section1Content": "The data controller for your personal data is Dermatoscopy Academy Tests. We are committed to protecting your privacy and processing your data in accordance with applicable data protection laws, including the GDPR.",
+    "section2Title": "2. Data We Collect",
+    "section2Content": "We collect the following data: account information (name, email address), usage data (test results, progress, quiz attempts), community contributions (cases, comments, annotations), and technical data (device type, browser, IP address for security purposes).",
+    "section3Title": "3. Purpose of Processing",
+    "section3Content": "Your data is processed to provide and improve our educational platform, manage your account, track your learning progress, enable community features, ensure platform security, and communicate important updates about the service.",
+    "section4Title": "4. Data Sharing",
+    "section4Content": "We do not sell your personal data. Data may be shared with Firebase/Google Cloud for hosting and storage, and with other users only through community features you voluntarily participate in (e.g., published cases and comments).",
+    "section5Title": "5. Your Rights",
+    "section5Content": "You have the right to access, rectify, or delete your personal data, restrict or object to processing, request data portability, and withdraw consent at any time. To exercise these rights, contact us through your account settings or by email.",
+    "section6Title": "6. Data Retention",
+    "section6Content": "We retain your data for as long as your account is active. Upon account deletion, personal data will be removed within 30 days, except where retention is required by law or for legitimate purposes such as resolving disputes."
   }
 }

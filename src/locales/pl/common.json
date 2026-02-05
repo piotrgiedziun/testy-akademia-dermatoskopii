@@ -321,7 +321,8 @@
     "goHome": "Wróć na stronę główną"
   },
   "footer": {
-    "terms": "Regulamin"
+    "terms": "Regulamin",
+    "privacy": "Polityka Prywatności"
   },
   "terms": {
     "title": "Regulamin",
@@ -342,5 +343,21 @@
     "section5Content": "Uczestnicząc w funkcjach społecznościowych, zobowiązujesz się traktować innych użytkowników z szacunkiem, udostępniać treści zgodne z najlepszą wiedzą medyczną oraz powstrzymywać się od publikowania nieodpowiednich lub obraźliwych materiałów.",
     "section6Title": "6. Prywatność",
     "section6Content": "Zbieramy i przetwarzamy Twoje dane osobowe zgodnie z naszą Polityką Prywatności. Korzystając z usługi, wyrażasz zgodę na zbieranie i wykorzystywanie informacji zgodnie z opisem w Polityce Prywatności."
+  },
+  "privacy": {
+    "title": "Polityka Prywatności",
+    "lastUpdated": "Ostatnia aktualizacja: luty 2026",
+    "section1Title": "1. Administrator danych",
+    "section1Content": "Administratorem Twoich danych osobowych jest Testy Akademia Dermatoskopii. Zobowiązujemy się do ochrony Twojej prywatności i przetwarzania danych zgodnie z obowiązującymi przepisami o ochronie danych osobowych, w tym RODO.",
+    "section2Title": "2. Zbierane dane",
+    "section2Content": "Zbieramy następujące dane: informacje o koncie (imię, adres e-mail), dane dotyczące użytkowania (wyniki testów, postępy, próby quizów), treści społecznościowe (przypadki, komentarze, adnotacje) oraz dane techniczne (typ urządzenia, przeglądarka, adres IP w celach bezpieczeństwa).",
+    "section3Title": "3. Cel przetwarzania",
+    "section3Content": "Twoje dane są przetwarzane w celu świadczenia i ulepszania naszej platformy edukacyjnej, zarządzania kontem, śledzenia postępów w nauce, umożliwienia funkcji społecznościowych, zapewnienia bezpieczeństwa platformy oraz komunikowania ważnych aktualizacji dotyczących usługi.",
+    "section4Title": "4. Udostępnianie danych",
+    "section4Content": "Nie sprzedajemy Twoich danych osobowych. Dane mogą być udostępniane Firebase/Google Cloud w celu hostingu i przechowywania oraz innym użytkownikom wyłącznie za pośrednictwem funkcji społecznościowych, w których dobrowolnie uczestniczysz (np. opublikowane przypadki i komentarze).",
+    "section5Title": "5. Twoje prawa",
+    "section5Content": "Masz prawo do dostępu, sprostowania lub usunięcia swoich danych osobowych, ograniczenia lub sprzeciwu wobec przetwarzania, przenoszenia danych oraz wycofania zgody w dowolnym momencie. Aby skorzystać z tych praw, skontaktuj się z nami przez ustawienia konta lub e-mail.",
+    "section6Title": "6. Przechowywanie danych",
+    "section6Content": "Przechowujemy Twoje dane tak długo, jak Twoje konto jest aktywne. Po usunięciu konta dane osobowe zostaną usunięte w ciągu 30 dni, z wyjątkiem sytuacji, gdy ich przechowywanie jest wymagane prawem lub w uzasadnionych celach, takich jak rozstrzyganie sporów."
   }
 }

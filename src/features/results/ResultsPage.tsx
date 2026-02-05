@@ -115,7 +115,7 @@ export function ResultsPage() {
               <p className="text-sm text-gray-500">{t('results.score')}</p>
             </div>
             <div className="p-4 bg-primary bg-opacity-5 rounded-xl">
-              <p className="text-3xl font-bold text-primary" data-testid="result-accuracy">{attempt.accuracy}%</p>
+              <p className="text-3xl font-bold text-primary" data-testid="result-accuracy">{parseFloat(attempt.accuracy.toFixed(2))}%</p>
               <p className="text-sm text-gray-500">{t('results.accuracy')}</p>
             </div>
           </div>
