@@ -6,3 +6,4 @@ export { CasesAdmin } from './CasesAdmin';
 export { UsersAdmin } from './UsersAdmin';
 export { ModerationDashboard } from './ModerationDashboard';
 export { AccessRequestsAdmin } from './AccessRequestsAdmin';
+export { TournamentsAdmin } from './TournamentsAdmin';

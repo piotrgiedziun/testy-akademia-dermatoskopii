@@ -29,6 +29,7 @@ export interface Test {
   pointsPerCorrect: number;
   answerType: 'single' | 'multiple';
   answers: TestAnswer[]; // answers defined per test
+  active?: boolean; // defaults to true for backward compat
 }
 
 // Image variant for cases
@@ -261,4 +262,35 @@ export interface AccessRequest {
   reviewedAt?: Date;
   reviewedBy?: string;
   rejectionReason?: string;
+}
+
+// Tournament
+export interface Tournament {
+  id: string;
+  name: LocalizedString;
+  testId: string;
+  active: boolean;
+  createdAt: Date;
+  createdBy: string;
+}
+
+export interface TournamentAttempt {
+  id: string;
+  participantName: string;
+  termsAcceptedAt: Date;
+  startedAt: Date;
+  completedAt: Date | null;
+  answers: UserAnswer[];
+  score: number;
+  accuracy: number;
+  totalTimeMs: number;
+}
+
+export interface TournamentRankingEntry {
+  rank: number;
+  participantName: string;
+  score: number;
+  accuracy: number;
+  totalTimeMs: number;
+  completedAt: Date;
 }

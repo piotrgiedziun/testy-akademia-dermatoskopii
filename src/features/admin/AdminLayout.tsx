@@ -19,6 +19,7 @@ export function AdminLayout() {
     { to: '/admin/users', label: t('admin.users') },
     { to: '/admin/moderation', label: t('admin.moderation') },
     { to: '/admin/access-requests', label: t('admin.accessRequests') },
+    { to: '/admin/tournaments', label: t('admin.tournaments') },
   ];
 
   return (

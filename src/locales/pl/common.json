@@ -191,7 +191,10 @@
     "annotationsList": "Lista oznaczeń",
     "noLabel": "Brak etykiety",
     "selectImage": "Wybierz zdjęcie do oznaczenia",
-    "confirmCloseModal": "Czy na pewno chcesz zamknąć? Niezapisane zmiany zostaną utracone."
+    "confirmCloseModal": "Czy na pewno chcesz zamknąć? Niezapisane zmiany zostaną utracone.",
+    "active": "Aktywny",
+    "inactive": "Nieaktywny",
+    "tournaments": "Turnieje"
   },
   "common": {
     "loading": "Ładowanie...",
@@ -361,5 +364,28 @@
     "section5Content": "Masz prawo do dostępu, sprostowania lub usunięcia swoich danych osobowych, ograniczenia lub sprzeciwu wobec przetwarzania, przenoszenia danych oraz wycofania zgody w dowolnym momencie. Aby skorzystać z tych praw, skontaktuj się z nami przez ustawienia konta lub e-mail.",
     "section6Title": "6. Przechowywanie danych",
     "section6Content": "Przechowujemy Twoje dane tak długo, jak Twoje konto jest aktywne. Po usunięciu konta dane osobowe zostaną usunięte w ciągu 30 dni, z wyjątkiem sytuacji, gdy ich przechowywanie jest wymagane prawem lub w uzasadnionych celach, takich jak rozstrzyganie sporów."
+  },
+  "tournament": {
+    "title": "Turniej",
+    "enterName": "Imię i nazwisko",
+    "namePlaceholder": "Twoje imię i nazwisko",
+    "acceptTerms": "Akceptuję",
+    "termsLink": "regulamin",
+    "startTournament": "Rozpocznij turniej",
+    "notFound": "Nie znaleziono turnieju",
+    "inactive": "Ten turniej jest obecnie nieaktywny",
+    "ranking": "Ranking turnieju",
+    "viewRanking": "Zobacz ranking",
+    "playAgain": "Zagraj ponownie",
+    "rank": "Miejsce",
+    "participant": "Uczestnik",
+    "score": "Wynik",
+    "time": "Czas",
+    "noAttempts": "Nikt jeszcze nie ukończył tego turnieju. Bądź pierwszy!",
+    "copyLink": "Kopiuj link",
+    "copied": "Skopiowano!",
+    "test": "Test",
+    "namePl": "Nazwa (PL)",
+    "nameEn": "Nazwa (EN)"
   }
 }

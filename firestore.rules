@@ -58,15 +58,15 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Tests collection (read-only for users, full access for admins)
+    // Tests collection (public read for tournament support, full access for admins)
     match /tests/{testId} {
-      allow read: if isAuthenticated();
+      allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Cases collection (read-only for users, full access for admins)
+    // Cases collection (public read for tournament support, full access for admins)
     match /cases/{caseId} {
-      allow read: if isAuthenticated();
+      allow read: if true;
       allow write: if isAdmin();
     }
 
@@ -149,6 +149,20 @@ service cloud.firestore {
       allow read: if canAccessCommunity();
       // Only moderators/admins can write to leaderboards
       allow write: if canModerate();
+    }
+
+    // Tournaments collection (public access for participants)
+    match /tournaments/{tournamentId} {
+      allow get: if isAdmin() || resource.data.active == true;
+      allow list: if isAdmin();
+      allow write: if isAdmin();
+
+      match /attempts/{attemptId} {
+        allow read: if true;
+        allow create: if true;
+        allow update: if resource.data.completedAt == null;
+        allow delete: if isAdmin();
+      }
     }
 
     // Access Requests collection

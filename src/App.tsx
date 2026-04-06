@@ -20,6 +20,7 @@ import {
   UsersAdmin,
   ModerationDashboard,
   AccessRequestsAdmin,
+  TournamentsAdmin,
 } from '@/features/admin';
 import {
   CommunityCasesPage,
@@ -30,6 +31,12 @@ import {
   LeaderboardPage,
 } from '@/features/community';
 import { TermsPage, PrivacyPolicyPage } from '@/features/legal';
+import {
+  TournamentEntryPage,
+  TournamentQuizPage,
+  TournamentResultsPage,
+  TournamentRankingPage,
+} from '@/features/tournament';
 
 function App() {
   const { initialize, isInitialized, user, acceptTerms, logout } = useAuthStore();
@@ -68,6 +75,12 @@ function App() {
         <Route path="/register" element={<ReCaptchaProvider><RegisterPage /></ReCaptchaProvider>} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
+
+        {/* Tournament routes (public, no auth required) */}
+        <Route path="/tournament/:uuid" element={<TournamentEntryPage />} />
+        <Route path="/tournament/:uuid/quiz" element={<TournamentQuizPage />} />
+        <Route path="/tournament/:uuid/results/:attemptId" element={<TournamentResultsPage />} />
+        <Route path="/tournament/:uuid/ranking" element={<TournamentRankingPage />} />
 
         {/* Protected routes */}
         <Route
@@ -177,6 +190,7 @@ function App() {
           <Route path="users" element={<UsersAdmin />} />
           <Route path="moderation" element={<ModerationDashboard />} />
           <Route path="access-requests" element={<AccessRequestsAdmin />} />
+          <Route path="tournaments" element={<TournamentsAdmin />} />
         </Route>
 
         {/* 404 */}

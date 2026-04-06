@@ -39,8 +39,9 @@ export function TestsPage() {
 
         setLevel(levelData);
 
+        const activeTests = testsData.filter((test) => test.active !== false);
         const testsWithProgress = await Promise.all(
-          testsData.map(async (test) => {
+          activeTests.map(async (test) => {
             const cases = await getCasesByTest(test.id);
             const progress = user
               ? await getUserProgressForTest(user.uid, test.id)

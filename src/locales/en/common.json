@@ -190,7 +190,10 @@
     "annotationsList": "Annotations list",
     "noLabel": "No label",
     "selectImage": "Select image to annotate",
-    "confirmCloseModal": "Are you sure you want to close? Unsaved changes will be lost."
+    "confirmCloseModal": "Are you sure you want to close? Unsaved changes will be lost.",
+    "active": "Active",
+    "inactive": "Inactive",
+    "tournaments": "Tournaments"
   },
   "common": {
     "loading": "Loading...",
@@ -360,5 +363,28 @@
     "section5Content": "You have the right to access, rectify, or delete your personal data, restrict or object to processing, request data portability, and withdraw consent at any time. To exercise these rights, contact us through your account settings or by email.",
     "section6Title": "6. Data Retention",
     "section6Content": "We retain your data for as long as your account is active. Upon account deletion, personal data will be removed within 30 days, except where retention is required by law or for legitimate purposes such as resolving disputes."
+  },
+  "tournament": {
+    "title": "Tournament",
+    "enterName": "Your name",
+    "namePlaceholder": "Enter your name",
+    "acceptTerms": "I accept the",
+    "termsLink": "terms and conditions",
+    "startTournament": "Start Tournament",
+    "notFound": "Tournament not found",
+    "inactive": "This tournament is currently inactive",
+    "ranking": "Tournament Ranking",
+    "viewRanking": "View Ranking",
+    "playAgain": "Play Again",
+    "rank": "Rank",
+    "participant": "Participant",
+    "score": "Score",
+    "time": "Time",
+    "noAttempts": "No one has completed this tournament yet. Be the first!",
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "test": "Test",
+    "namePl": "Name (PL)",
+    "nameEn": "Name (EN)"
   }
 }

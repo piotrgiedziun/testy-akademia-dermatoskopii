@@ -7,6 +7,7 @@ import {
   doc,
   setDoc,
   deleteDoc,
+  updateDoc,
   collection,
   getDocs,
   query,
@@ -31,6 +32,7 @@ export function TestsAdmin() {
     pointsPerCorrect: 10,
     answerType: 'single' as 'single' | 'multiple',
     answers: [] as TestAnswer[],
+    active: true,
   });
 
   const [newAnswerPl, setNewAnswerPl] = useState('');
@@ -79,6 +81,7 @@ export function TestsAdmin() {
         pointsPerCorrect: test.pointsPerCorrect,
         answerType: test.answerType,
         answers: test.answers || [],
+        active: test.active !== false,
       });
     } else {
       setEditingTest(null);
@@ -92,6 +95,7 @@ export function TestsAdmin() {
         pointsPerCorrect: 10,
         answerType: 'single',
         answers: [],
+        active: true,
       });
     }
     setNewAnswerPl('');
@@ -111,6 +115,7 @@ export function TestsAdmin() {
       pointsPerCorrect: formData.pointsPerCorrect,
       answerType: formData.answerType,
       answers: formData.answers,
+      active: formData.active,
     };
 
     try {
@@ -153,6 +158,17 @@ export function TestsAdmin() {
     });
   };
 
+  const handleToggleActive = async (test: Test) => {
+    try {
+      await updateDoc(doc(db, 'tests', test.id), {
+        active: test.active === false ? true : false,
+      });
+      fetchData();
+    } catch (error) {
+      console.error('Error toggling test active:', error);
+    }
+  };
+
   const handleDelete = async (testId: string) => {
     if (!confirm(t('admin.confirmDelete'))) return;
 
@@ -189,6 +205,13 @@ export function TestsAdmin() {
                 </p>
               </div>
               <div className="flex gap-2">
+                <Button
+                  variant={test.active !== false ? 'primary' : 'secondary'}
+                  size="sm"
+                  onClick={() => handleToggleActive(test)}
+                >
+                  {test.active !== false ? t('admin.active') : t('admin.inactive')}
+                </Button>
                 <Button variant="ghost" size="sm" onClick={() => openModal(test)}>
                   {t('admin.edit')}
                 </Button>

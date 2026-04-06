@@ -21,6 +21,7 @@ interface QuizQuestionProps {
   timerActive: boolean;
   onTimeUpdate: (timeRemaining: number, timeSpent: number) => void;
   onTimeout: () => void;
+  onExit?: () => void;
 }
 
 export function QuizQuestion({
@@ -38,6 +39,7 @@ export function QuizQuestion({
   timerActive,
   onTimeUpdate,
   onTimeout,
+  onExit,
 }: QuizQuestionProps) {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -70,7 +72,11 @@ export function QuizQuestion({
   };
 
   const confirmExit = () => {
-    navigate('/levels');
+    if (onExit) {
+      onExit();
+    } else {
+      navigate('/levels');
+    }
   };
 
   return (
