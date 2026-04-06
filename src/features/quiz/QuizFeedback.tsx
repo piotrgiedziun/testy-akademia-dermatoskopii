@@ -141,7 +141,7 @@ export function QuizFeedback({
                 : t('quiz.incorrect')}
             </span>
             <span className="text-sm opacity-90">
-              +{pointsEarned} {t('quiz.points')}
+              +{pointsEarned} {t('quiz.points', { count: pointsEarned })}
             </span>
           </div>
 

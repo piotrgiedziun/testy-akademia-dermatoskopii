@@ -136,7 +136,7 @@ export function TestsPage() {
                   {test.progress && (
                     <div className="mt-2 text-sm">
                       <span className="text-primary font-medium">
-                        {t('tests.bestScore')}: {test.progress.bestScore} ({test.progress.bestAccuracy}%)
+                        {t('tests.bestScore')}: {test.progress.bestScore} ({parseFloat(test.progress.bestAccuracy.toFixed(2))}%)
                       </span>
                       <span className="text-gray-400 ml-2">
                         · {t('tests.attemptsCount')}: {test.progress.totalAttempts}
