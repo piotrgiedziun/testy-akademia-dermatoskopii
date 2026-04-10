@@ -15,6 +15,7 @@ export function TournamentRankingPage() {
   const [ranking, setRanking] = useState<TournamentRankingEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   const getLocalizedText = (text: { pl: string; en: string }) => {
     return i18n.language === 'pl' ? text.pl : text.en;
@@ -134,7 +135,9 @@ export function TournamentRankingPage() {
                   <div className="flex items-center justify-center">
                     {getRankBadge(entry.rank)}
                   </div>
-                  <div className="font-medium text-charcoal truncate">
+                  <div className={`font-medium text-charcoal truncate ${
+                    entry.rank > 3 && !showAll ? 'blur-sm select-none' : ''
+                  }`}>
                     {entry.participantName}
                   </div>
                   <div className="text-right font-semibold text-primary">
@@ -147,6 +150,17 @@ export function TournamentRankingPage() {
               ))}
             </div>
           </Card>
+        )}
+
+        {ranking.length > 3 && (
+          <div className="text-center mt-4">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="text-sm text-primary hover:underline"
+            >
+              {showAll ? t('tournament.showTop3') : t('tournament.showAll')}
+            </button>
+          </div>
         )}
 
         <div className="text-center mt-6">

@@ -406,6 +406,8 @@
     "test": "Test",
     "namePl": "Name (PL)",
     "nameEn": "Name (EN)",
-    "possibleAnswers": "Possible answers"
+    "possibleAnswers": "Possible answers",
+    "showAll": "Show all",
+    "showTop3": "Show top 3 only"
   }
 }
