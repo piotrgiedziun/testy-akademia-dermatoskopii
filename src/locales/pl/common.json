@@ -120,6 +120,8 @@
     "questionsCorrect": "Poprawnych odpowiedzi",
     "questionsMissed": "Błędnych odpowiedzi",
     "questionsTimedOut": "Przekroczony czas",
+    "correct": "Poprawne",
+    "incorrect": "Błędne",
     "reviewMissed": "Przejrzyj błędy",
     "retake": "Powtórz test",
     "backToTests": "Powrót do testów",
@@ -365,6 +367,24 @@
     "section6Title": "6. Przechowywanie danych",
     "section6Content": "Przechowujemy Twoje dane tak długo, jak Twoje konto jest aktywne. Po usunięciu konta dane osobowe zostaną usunięte w ciągu 30 dni, z wyjątkiem sytuacji, gdy ich przechowywanie jest wymagane prawem lub w uzasadnionych celach, takich jak rozstrzyganie sporów."
   },
+  "tournamentTerms": {
+    "title": "Regulamin turnieju",
+    "lastUpdated": "Ostatnia aktualizacja: kwiecień 2026",
+    "section1Title": "1. Akceptacja warunków",
+    "section1Content": "Przystępując do turnieju organizowanego na platformie Testy Akademia Dermatoskopii, akceptujesz niniejszy Regulamin turnieju. Jeśli nie zgadzasz się z tymi warunkami, prosimy o nieprzystępowanie do turnieju.",
+    "section2Title": "2. Cel turnieju",
+    "section2Content": "Turniej służy celom edukacyjnym i ma na celu sprawdzenie wiedzy z zakresu dermatoskopii. Wyniki turnieju mają charakter informacyjny i nie stanowią oceny kompetencji zawodowych.",
+    "section3Title": "3. Dane uczestnika",
+    "section3Content": "Przystępując do turnieju, podajesz swoje imię i nazwisko. Dane te są przetwarzane w celu identyfikacji uczestników oraz prowadzenia rankingu turnieju.",
+    "section4Title": "4. Zasady turnieju",
+    "section4Content": "Każdy uczestnik odpowiada na pytania testowe samodzielnie. Niedozwolone jest korzystanie z pomocy innych osób, materiałów zewnętrznych lub urządzeń elektronicznych podczas rozwiązywania testu. Ranking jest tworzony na podstawie uzyskanego wyniku (malejąco) oraz czasu rozwiązywania (rosnąco).",
+    "section5Title": "5. Wykorzystanie treści",
+    "section5Content": "Wszystkie treści prezentowane w ramach turnieju, w tym zdjęcia i materiały testowe, są chronione prawem autorskim. Nie wolno ich powielać, fotografować, nagrywać ani rozpowszechniać.",
+    "section6Title": "6. Prywatność",
+    "section6Content": "Dane osobowe uczestników są przetwarzane zgodnie z obowiązującymi przepisami o ochronie danych osobowych, w tym RODO. Dane są przechowywane wyłącznie na potrzeby turnieju i mogą zostać usunięte na żądanie uczestnika.",
+    "section7Title": "7. Zgoda na publikację wyników",
+    "section7Content": "Wyrażam zgodę na publikację moich danych osobowych (imię i nazwisko, wynik, czas) na stronie Akademii Dermatoskopii oraz w materiałach związanych z turniejem w celu ogłoszenia wyników i prowadzenia rankingu."
+  },
   "tournament": {
     "title": "Turniej",
     "enterName": "Imię i nazwisko",
@@ -386,6 +406,7 @@
     "copied": "Skopiowano!",
     "test": "Test",
     "namePl": "Nazwa (PL)",
-    "nameEn": "Nazwa (EN)"
+    "nameEn": "Nazwa (EN)",
+    "possibleAnswers": "Możliwe odpowiedzi"
   }
 }

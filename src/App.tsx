@@ -30,7 +30,7 @@ import {
   UserProfilePage,
   LeaderboardPage,
 } from '@/features/community';
-import { TermsPage, PrivacyPolicyPage } from '@/features/legal';
+import { TermsPage, PrivacyPolicyPage, TournamentTermsPage } from '@/features/legal';
 import {
   TournamentEntryPage,
   TournamentQuizPage,
@@ -75,6 +75,7 @@ function App() {
         <Route path="/register" element={<ReCaptchaProvider><RegisterPage /></ReCaptchaProvider>} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/tournament-terms" element={<TournamentTermsPage />} />
 
         {/* Tournament routes (public, no auth required) */}
         <Route path="/tournament/:uuid" element={<TournamentEntryPage />} />

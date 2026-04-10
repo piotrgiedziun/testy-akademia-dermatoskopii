@@ -116,6 +116,24 @@ export function TournamentEntryPage() {
               </div>
             </div>
 
+            {test.answers && test.answers.length > 0 && (
+              <div>
+                <p className="text-sm font-medium text-charcoal mb-2">
+                  {t('tournament.possibleAnswers')}
+                </p>
+                <div className="max-h-40 overflow-y-auto border rounded-lg divide-y">
+                  {test.answers.map((answer) => (
+                    <div
+                      key={answer.id}
+                      className="px-3 py-2 text-sm text-gray-700"
+                    >
+                      {getLocalizedText(answer.name)}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div>
               <Input
                 label={t('tournament.enterName')}
@@ -136,7 +154,7 @@ export function TournamentEntryPage() {
               <span className="text-sm text-gray-600">
                 {t('tournament.acceptTerms')}{' '}
                 <a
-                  href="/terms"
+                  href="/tournament-terms"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"

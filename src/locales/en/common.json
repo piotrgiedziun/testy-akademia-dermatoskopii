@@ -119,6 +119,8 @@
     "questionsCorrect": "Correct answers",
     "questionsMissed": "Wrong answers",
     "questionsTimedOut": "Timed out",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
     "reviewMissed": "Review mistakes",
     "retake": "Retake test",
     "backToTests": "Back to tests",
@@ -364,6 +366,24 @@
     "section6Title": "6. Data Retention",
     "section6Content": "We retain your data for as long as your account is active. Upon account deletion, personal data will be removed within 30 days, except where retention is required by law or for legitimate purposes such as resolving disputes."
   },
+  "tournamentTerms": {
+    "title": "Tournament Terms and Conditions",
+    "lastUpdated": "Last updated: April 2026",
+    "section1Title": "1. Acceptance of Terms",
+    "section1Content": "By participating in a tournament organized on the Dermatoscopy Academy Tests platform, you accept these Tournament Terms and Conditions. If you do not agree with these terms, please do not participate in the tournament.",
+    "section2Title": "2. Purpose of the Tournament",
+    "section2Content": "The tournament serves educational purposes and aims to test knowledge in the field of dermatoscopy. Tournament results are informational and do not constitute an assessment of professional competence.",
+    "section3Title": "3. Participant Data",
+    "section3Content": "By joining the tournament, you provide your name. This data is processed for the purpose of identifying participants and maintaining the tournament ranking.",
+    "section4Title": "4. Tournament Rules",
+    "section4Content": "Each participant answers test questions independently. The use of assistance from other people, external materials, or electronic devices during the test is not permitted. The ranking is created based on the score achieved (descending) and the time taken (ascending).",
+    "section5Title": "5. Content Usage",
+    "section5Content": "All content presented during the tournament, including images and test materials, is protected by copyright. Copying, photographing, recording, or distributing this content is prohibited.",
+    "section6Title": "6. Privacy",
+    "section6Content": "Participants' personal data is processed in accordance with applicable data protection laws, including the GDPR. Data is stored solely for tournament purposes and may be deleted upon the participant's request.",
+    "section7Title": "7. Consent to Publication of Results",
+    "section7Content": "I consent to the publication of my personal data (name, score, time) on the Dermatoscopy Academy website and in tournament-related materials for the purpose of announcing results and maintaining the ranking."
+  },
   "tournament": {
     "title": "Tournament",
     "enterName": "Your name",
@@ -385,6 +405,7 @@
     "copied": "Copied!",
     "test": "Test",
     "namePl": "Name (PL)",
-    "nameEn": "Name (EN)"
+    "nameEn": "Name (EN)",
+    "possibleAnswers": "Possible answers"
   }
 }
