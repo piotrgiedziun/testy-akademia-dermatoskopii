@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal } from '@/components/ui';
@@ -45,6 +45,12 @@ export function QuizQuestion({
   const navigate = useNavigate();
   const [showAnswerModal, setShowAnswerModal] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+
+  // Reset modal state when advancing to a new question (e.g. tournament auto-advance on timeout)
+  useEffect(() => {
+    setShowAnswerModal(false);
+    setShowExitConfirm(false);
+  }, [currentIndex]);
 
   const getLocalizedText = (text: { pl: string; en: string }) => {
     return i18n.language === 'pl' ? text.pl : text.en;

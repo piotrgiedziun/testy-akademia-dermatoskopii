@@ -197,4 +197,46 @@ export const testCases: TestCase[] = [
     pitfall: null,
     annotations: null,
   },
+
+  // Cases for test-short-timer (3s countdown)
+  {
+    id: "case-7",
+    testId: "test-short-timer",
+    order: 1,
+    images: [
+      {
+        url: "https://placehold.co/600x400/png?text=ShortTimer1",
+        type: "polarized",
+      },
+    ],
+    correctAnswers: ["a1"],
+    explanation: {
+      pl: "Przypadek 1 z krótkim timerem.",
+      en: "Short timer case 1.",
+    },
+    features: [],
+    differentials: [],
+    pitfall: null,
+    annotations: null,
+  },
+  {
+    id: "case-8",
+    testId: "test-short-timer",
+    order: 2,
+    images: [
+      {
+        url: "https://placehold.co/600x400/png?text=ShortTimer2",
+        type: "polarized",
+      },
+    ],
+    correctAnswers: ["a2"],
+    explanation: {
+      pl: "Przypadek 2 z krótkim timerem.",
+      en: "Short timer case 2.",
+    },
+    features: [],
+    differentials: [],
+    pitfall: null,
+    annotations: null,
+  },
 ];

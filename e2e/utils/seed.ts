@@ -4,6 +4,7 @@ import { testUsers } from "../fixtures/test-data/users";
 import { testLevels } from "../fixtures/test-data/levels";
 import { testTests } from "../fixtures/test-data/tests";
 import { testCases } from "../fixtures/test-data/cases";
+import { testTournaments } from "../fixtures/test-data/tournaments";
 import {
   LevelSchema,
   TestSchema,
@@ -65,6 +66,7 @@ export async function seedTestData(): Promise<SeededData> {
       pointsPerCorrect: test.pointsPerCorrect,
       answerType: test.answerType,
       answers: test.answers,
+      active: true,
     });
     seededData.testIds.push(test.id);
   }
@@ -84,6 +86,18 @@ export async function seedTestData(): Promise<SeededData> {
       annotations: caseData.annotations || [],
     });
     seededData.caseIds.push(caseData.id);
+  }
+
+  // Seed tournaments
+  for (const tournament of testTournaments) {
+    const tournamentRef = db.collection("tournaments").doc(tournament.id);
+    await tournamentRef.set({
+      name: tournament.name,
+      testId: tournament.testId,
+      active: tournament.active,
+      createdBy: tournament.createdBy,
+      createdAt: new Date(),
+    });
   }
 
   console.log("Test data seeded successfully");

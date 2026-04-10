@@ -69,7 +69,11 @@ export function TournamentQuizPage() {
   const advanceOrFinish = async () => {
     const state = useTournamentStore.getState();
     if (state.currentCaseIndex >= state.cases.length - 1) {
-      await state.finishQuiz();
+      try {
+        await state.finishQuiz();
+      } catch (error) {
+        console.error('Error finishing quiz:', error);
+      }
       navigate(
         `/tournament/${uuid}/results/${state.attemptId}`
       );
@@ -100,6 +104,13 @@ export function TournamentQuizPage() {
     navigate(`/tournament/${uuid}`);
   };
 
+  // If all questions answered (e.g. page refresh after last question), auto-finish
+  useEffect(() => {
+    if (test && cases.length > 0 && !cases[currentCaseIndex]) {
+      advanceOrFinish();
+    }
+  }, [test, cases, currentCaseIndex]);
+
   if (isLoading || !test || cases.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -110,7 +121,6 @@ export function TournamentQuizPage() {
 
   const currentCase = cases[currentCaseIndex];
   if (!currentCase) {
-    // All questions answered, finishing
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Loading size="lg" text={t('common.loading')} />
@@ -120,6 +130,7 @@ export function TournamentQuizPage() {
 
   return (
     <QuizQuestion
+      key={currentCaseIndex}
       test={test}
       currentCase={currentCase}
       currentIndex={currentCaseIndex}

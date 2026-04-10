@@ -128,6 +128,7 @@ npm run e2e  # Starts emulators, dev server, and runs tests automatically
 ```bash
 # Terminal 1: Start Firebase emulators first
 npm run emulators
+npm run dev:e2e
 
 # Terminal 2: Run tests with UI (wait for "All emulators ready!" message)
 npm run test:e2e:ui

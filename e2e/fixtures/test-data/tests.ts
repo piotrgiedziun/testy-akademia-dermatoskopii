@@ -78,4 +78,21 @@ export const testTests: TestTest[] = [
       { id: "a5", name: { pl: "Rak podstawnokomórkowy", en: "Basal cell carcinoma" } },
     ],
   },
+  {
+    id: "test-short-timer",
+    levelId: "level-1",
+    order: 3,
+    title: {
+      pl: "Test z krótkim timerem",
+      en: "Test with short timer",
+    },
+    timerMode: "countdown",
+    timePerQuestion: 3,
+    pointsPerCorrect: 10,
+    answerType: "single",
+    answers: [
+      { id: "a1", name: { pl: "Znamię melanocytowe", en: "Melanocytic nevus" } },
+      { id: "a2", name: { pl: "Czerniak", en: "Melanoma" } },
+    ],
+  },
 ];

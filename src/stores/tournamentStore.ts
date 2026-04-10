@@ -205,6 +205,10 @@ export const useTournamentStore = create<TournamentQuizState>()(
         if (!test || !attemptId || !tournamentId) return;
 
         const currentCase = cases[currentCaseIndex];
+
+        // Guard: skip if answer already submitted for this case (race with timeout)
+        if (userAnswers.some((a) => a.caseId === currentCase.id)) return;
+
         const isCorrect =
           selectedAnswers.length === currentCase.correctAnswers.length &&
           selectedAnswers.every((a) =>
@@ -251,8 +255,11 @@ export const useTournamentStore = create<TournamentQuizState>()(
       },
 
       finishQuiz: async () => {
-        const { attemptId, userAnswers, test, tournamentId } = get();
-        if (!attemptId || !test || !tournamentId) return;
+        const { attemptId, userAnswers, test, tournamentId, isLoading } = get();
+        if (!attemptId || !test || !tournamentId || isLoading) return;
+
+        // Prevent double-finish
+        set({ isLoading: true });
 
         await completeTournamentAttempt(
           tournamentId,
@@ -260,6 +267,8 @@ export const useTournamentStore = create<TournamentQuizState>()(
           userAnswers,
           test.pointsPerCorrect
         );
+
+        set({ isLoading: false });
       },
 
       resetTournament: () => {
@@ -279,6 +288,10 @@ export const useTournamentStore = create<TournamentQuizState>()(
         if (!test || !attemptId || !tournamentId) return;
 
         const currentCase = cases[currentCaseIndex];
+
+        // Guard: skip if answer already submitted for this case (race with submit)
+        if (userAnswers.some((a) => a.caseId === currentCase.id)) return;
+
         const answer: UserAnswer = {
           caseId: currentCase.id,
           selectedAnswers: [],
