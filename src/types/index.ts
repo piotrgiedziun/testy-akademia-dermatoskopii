@@ -287,6 +287,7 @@ export interface TournamentAttempt {
 }
 
 export interface TournamentRankingEntry {
+  attemptId: string;
   rank: number;
   participantName: string;
   score: number;

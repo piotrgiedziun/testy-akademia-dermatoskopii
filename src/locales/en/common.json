@@ -408,6 +408,8 @@
     "nameEn": "Name (EN)",
     "possibleAnswers": "Possible answers",
     "showAll": "Show all",
-    "showTop3": "Show top 3 only"
+    "showTop3": "Show top 3 only",
+    "results": "Results",
+    "pts": "pts"
   }
 }

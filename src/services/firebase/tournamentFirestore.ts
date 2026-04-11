@@ -173,6 +173,15 @@ export const completeTournamentAttempt = async (
   );
 };
 
+export const deleteTournamentAttempt = async (
+  tournamentId: string,
+  attemptId: string
+): Promise<void> => {
+  await deleteDoc(
+    doc(db, 'tournaments', tournamentId, 'attempts', attemptId)
+  );
+};
+
 export const getTournamentRanking = async (
   tournamentId: string
 ): Promise<TournamentRankingEntry[]> => {
@@ -184,9 +193,10 @@ export const getTournamentRanking = async (
     )
   );
 
-  const attempts = snapshot.docs.map((doc) => {
-    const data = doc.data();
+  const attempts = snapshot.docs.map((d) => {
+    const data = d.data();
     return {
+      attemptId: d.id,
       participantName: data.participantName as string,
       score: (data.score as number) || 0,
       accuracy: (data.accuracy as number) || 0,

@@ -409,6 +409,8 @@
     "nameEn": "Nazwa (EN)",
     "possibleAnswers": "Możliwe odpowiedzi",
     "showAll": "Pokaż wszystkich",
-    "showTop3": "Pokaż tylko top 3"
+    "showTop3": "Pokaż tylko top 3",
+    "results": "Wyniki",
+    "pts": "pkt"
   }
 }

@@ -9,8 +9,10 @@ import {
   createTournament,
   updateTournament,
   deleteTournament,
+  getTournamentRanking,
+  deleteTournamentAttempt,
 } from '@/services/firebase/tournamentFirestore';
-import type { Tournament, Test } from '@/types';
+import type { Tournament, Test, TournamentRankingEntry } from '@/types';
 
 export function TournamentsAdmin() {
   const { t, i18n } = useTranslation();
@@ -21,6 +23,9 @@ export function TournamentsAdmin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTournament, setEditingTournament] = useState<Tournament | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [resultsModalTournament, setResultsModalTournament] = useState<Tournament | null>(null);
+  const [resultsData, setResultsData] = useState<TournamentRankingEntry[]>([]);
+  const [resultsLoading, setResultsLoading] = useState(false);
   const [formData, setFormData] = useState({
     namePl: '',
     nameEn: '',
@@ -125,6 +130,38 @@ export function TournamentsAdmin() {
     }
   };
 
+  const openResultsModal = async (tournament: Tournament) => {
+    setResultsModalTournament(tournament);
+    setResultsLoading(true);
+    try {
+      const data = await getTournamentRanking(tournament.id);
+      setResultsData(data);
+    } catch (error) {
+      console.error('Error fetching results:', error);
+      setResultsData([]);
+    } finally {
+      setResultsLoading(false);
+    }
+  };
+
+  const handleDeleteAttempt = async (attemptId: string) => {
+    if (!resultsModalTournament || !confirm(t('admin.confirmDelete'))) return;
+
+    try {
+      await deleteTournamentAttempt(resultsModalTournament.id, attemptId);
+      setResultsData((prev) => prev.filter((e) => e.attemptId !== attemptId));
+    } catch (error) {
+      console.error('Error deleting attempt:', error);
+    }
+  };
+
+  const formatTime = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
   const copyLink = (tournamentId: string) => {
     const link = `${window.location.origin}/tournament/${tournamentId}`;
     navigator.clipboard.writeText(link);
@@ -174,6 +211,13 @@ export function TournamentsAdmin() {
                   {copiedId === tournament.id
                     ? t('tournament.copied')
                     : t('tournament.copyLink')}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => openResultsModal(tournament)}
+                >
+                  {t('tournament.results')}
                 </Button>
                 <Button
                   variant={tournament.active ? 'primary' : 'secondary'}
@@ -285,6 +329,56 @@ export function TournamentsAdmin() {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* Results Modal */}
+      <Modal
+        isOpen={!!resultsModalTournament}
+        onClose={() => setResultsModalTournament(null)}
+        title={resultsModalTournament ? `${t('tournament.results')} — ${getLocalizedText(resultsModalTournament.name)}` : ''}
+        size="4xl"
+      >
+        {resultsLoading ? (
+          <Loading size="lg" text={t('common.loading')} />
+        ) : resultsData.length === 0 ? (
+          <p className="text-center text-gray-500 py-4">
+            {t('tournament.noAttempts')}
+          </p>
+        ) : (
+          <div className="space-y-2 max-h-96 overflow-y-auto">
+            {resultsData.map((entry) => (
+              <div
+                key={entry.attemptId}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              >
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <span className="text-sm font-medium text-gray-400 w-6 text-center">
+                    {entry.rank}
+                  </span>
+                  <span className="font-medium text-charcoal truncate">
+                    {entry.participantName}
+                  </span>
+                </div>
+                <div className="flex items-center gap-4 flex-shrink-0">
+                  <span className="text-sm font-semibold text-primary">
+                    {entry.score} {t('tournament.pts')}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    {formatTime(entry.totalTimeMs)}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-red-500"
+                    onClick={() => handleDeleteAttempt(entry.attemptId)}
+                  >
+                    {t('admin.delete')}
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </Modal>
     </div>
   );
