@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/stores';
 import { Button } from '@/components/ui';
+import { LENS_ROUTE } from '@/features/lens/lensBridge';
 
 export function Header() {
   const { t, i18n } = useTranslation();
@@ -41,6 +42,12 @@ export function Header() {
                   className="text-charcoal hover:text-primary transition-colors"
                 >
                   {t('nav.levels')}
+                </Link>
+                <Link
+                  to={LENS_ROUTE}
+                  className="text-charcoal hover:text-primary transition-colors"
+                >
+                  {t('nav.lens')}
                 </Link>
                 <Link
                   to="/community"
@@ -136,6 +143,13 @@ export function Header() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {t('nav.levels')}
+                  </Link>
+                  <Link
+                    to={LENS_ROUTE}
+                    className="px-3 py-2 text-charcoal hover:bg-gray-50 rounded-lg"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {t('nav.lens')}
                   </Link>
                   <Link
                     to="/community"

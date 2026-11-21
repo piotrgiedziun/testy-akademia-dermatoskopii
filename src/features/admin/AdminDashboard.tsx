@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, Loading } from '@/components/ui';
+import { LENS_ROUTE } from '@/features/lens/lensBridge';
 import { getLevels } from '@/services/firebase/firestore';
 import { collection, getCountFromServer } from 'firebase/firestore';
 import { db } from '@/services/firebase/config';
@@ -64,6 +66,17 @@ export function AdminDashboard() {
           </Card>
         ))}
       </div>
+
+      <Card className="mt-6">
+        <h2 className="text-lg font-semibold text-charcoal">{t('lens.admin.title')}</h2>
+        <p className="mt-1 max-w-2xl text-gray-600">{t('lens.admin.description')}</p>
+        <Link
+          to={LENS_ROUTE}
+          className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          {t('lens.admin.open')}
+        </Link>
+      </Card>
     </div>
   );
 }

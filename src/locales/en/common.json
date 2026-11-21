@@ -6,6 +6,7 @@
   "nav": {
     "home": "Home",
     "levels": "Learning",
+    "lens": "Beneath the Lens",
     "community": "Community",
     "profile": "Profile",
     "admin": "Admin Panel",
@@ -411,5 +412,43 @@
     "showTop3": "Show top 3 only",
     "results": "Results",
     "pts": "pts"
+  },
+  "lens": {
+    "documentTitle": "Beneath the Lens · Akademia Dermatoskopii",
+    "projectorDocumentTitle": "Projector · Beneath the Lens",
+    "frameTitle": "Beneath the Lens: interactive 3D explainer of how a dermatoscope sees into skin",
+    "projectorFrameTitle": "Beneath the Lens: projector view of the presentation",
+    "slowLoad": "The 3D view is taking unusually long to load.",
+    "loadError": "The 3D view could not be started. Reload the page, or try another browser or device.",
+    "presenter": {
+      "label": "Presenter",
+      "idle": "Not presenting",
+      "start": "Start presentation",
+      "startHint": "Opens a projector window for the second screen. Keys: N notes · B blank · I intro · PgUp/PgDn chapters.",
+      "waiting": "Opening the projector window…",
+      "connected": "Projector connected",
+      "disconnected": "Projector window not connected",
+      "help": "Drag the new window to the projector, then click it or press F for full screen.",
+      "fullscreen": "Full screen on the projector",
+      "noFullscreen": "Click the projector window or press F there for full screen.",
+      "blocked": "No projector window yet. Allow pop-ups for this site, or",
+      "openProjectorPage": "open the projector page",
+      "openProjector": "Open projector window",
+      "notes": "Notes on screen",
+      "blank": "Blank",
+      "intro": "Play intro",
+      "introStop": "Stop intro",
+      "end": "End",
+      "introOn": "Intro playing on the projector.",
+      "introLocal": "No projector connected: the intro plays in this window. Esc closes it.",
+      "introMuted": "The projector browser blocked sound, so the intro plays muted. Click the projector window once to turn sound on.",
+      "introFail": "The video could not be embedded here.",
+      "introYouTube": "Open on YouTube"
+    },
+    "admin": {
+      "title": "Presentation: Beneath the Lens",
+      "description": "The interactive 3D explainer, for showing on a course. Open it, press \"Start presentation\" and drag the projector window to the second screen; this window keeps the controls and the notes.",
+      "open": "Open presenter view"
+    }
   }
 }

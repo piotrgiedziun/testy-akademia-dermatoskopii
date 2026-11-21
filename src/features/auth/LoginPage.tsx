@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, type Location } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Layout } from '@/components/layout';
 import { Button, Input, Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
@@ -32,8 +32,13 @@ function GoogleIcon({ className }: { className?: string }) {
 export function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, loginWithGoogle, isLoading, error, clearError } = useAuthStore();
   const { executeReCaptcha, isReady } = useReCaptcha();
+
+  // ProtectedRoute sends users here with the page they asked for (e.g. /lens/#evo): go back there after login
+  const from = (location.state as { from?: Location } | null)?.from;
+  const afterLogin = from ? `${from.pathname}${from.search}${from.hash}` : '/levels';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -53,7 +58,7 @@ export function LoginPage() {
 
     try {
       await login(email, password);
-      navigate('/levels');
+      navigate(afterLogin, { replace: true });
     } catch {
       // Error is handled by store
     }
@@ -63,7 +68,7 @@ export function LoginPage() {
     clearError();
     try {
       await loginWithGoogle();
-      navigate('/levels');
+      navigate(afterLogin, { replace: true });
     } catch {
       // Error is handled by store
     }

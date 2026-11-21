@@ -6,6 +6,7 @@
   "nav": {
     "home": "Strona główna",
     "levels": "Nauka",
+    "lens": "Pod soczewką",
     "community": "Społeczność",
     "profile": "Profil",
     "admin": "Panel admina",
@@ -412,5 +413,43 @@
     "showTop3": "Pokaż tylko top 3",
     "results": "Wyniki",
     "pts": "pkt"
+  },
+  "lens": {
+    "documentTitle": "Pod soczewką · Akademia Dermatoskopii",
+    "projectorDocumentTitle": "Projektor · Pod soczewką",
+    "frameTitle": "Pod soczewką: interaktywne 3D o tym, jak dermatoskop zagląda w głąb skóry",
+    "projectorFrameTitle": "Pod soczewką: widok projektora prezentacji",
+    "slowLoad": "Widok 3D ładuje się wyjątkowo długo.",
+    "loadError": "Nie udało się uruchomić widoku 3D. Odśwież stronę albo spróbuj w innej przeglądarce lub na innym urządzeniu.",
+    "presenter": {
+      "label": "Prezenter",
+      "idle": "Prezentacja nieaktywna",
+      "start": "Rozpocznij prezentację",
+      "startHint": "Otwiera okno projektora na drugi ekran. Klawisze: N notatki · B wygaś · I intro · PgUp/PgDn rozdziały.",
+      "waiting": "Otwieranie okna projektora…",
+      "connected": "Projektor połączony",
+      "disconnected": "Okno projektora niepołączone",
+      "help": "Przeciągnij nowe okno na projektor, a potem kliknij je lub naciśnij F, aby włączyć pełny ekran.",
+      "fullscreen": "Pełny ekran na projektorze",
+      "noFullscreen": "Kliknij okno projektora lub naciśnij tam F, aby włączyć pełny ekran.",
+      "blocked": "Brak okna projektora. Zezwól na wyskakujące okna dla tej strony albo",
+      "openProjectorPage": "otwórz stronę projektora",
+      "openProjector": "Otwórz okno projektora",
+      "notes": "Notatki na ekranie",
+      "blank": "Wygaś",
+      "intro": "Odtwórz intro",
+      "introStop": "Zatrzymaj intro",
+      "end": "Zakończ",
+      "introOn": "Intro odtwarzane na projektorze.",
+      "introLocal": "Projektor niepołączony: intro odtwarza się w tym oknie. Esc zamyka.",
+      "introMuted": "Przeglądarka projektora zablokowała dźwięk, więc intro gra bez dźwięku. Kliknij raz okno projektora, aby włączyć dźwięk.",
+      "introFail": "Nie udało się osadzić filmu.",
+      "introYouTube": "Otwórz w YouTube"
+    },
+    "admin": {
+      "title": "Prezentacja: Pod soczewką",
+      "description": "Interaktywne 3D do pokazywania na kursie. Otwórz je, naciśnij „Rozpocznij prezentację” i przeciągnij okno projektora na drugi ekran; to okno zachowuje sterowanie i notatki.",
+      "open": "Otwórz widok prezentera"
+    }
   }
 }

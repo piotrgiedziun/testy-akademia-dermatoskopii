@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Interactive 3D explainer of how a dermatoscope sees into skin: non-polarized, polarized and 405 nm light, skin layers, and dermoscopy–histopathology correlation for melanoma, nevi, BCC, SCC, seborrheic keratosis and dermatofibroma, how each lesion evolves from its first stage to its last, and melanoma in difficult sites: lentigo maligna of the face and nail apparatus melanoma.">
+<meta name="theme-color" content="#0D1830">
+<title>Beneath the Lens</title>
+<script>
+/* This page only runs inside the app (route /lens/, which requires login). Opened on its own, it hands over to that route. */
+if (window.top === window.self) location.replace(location.hash === '#audience' ? '/lens/projector' : '/lens/' + location.hash);
+/* engine.js is a module: if it, or the three.js chunk it imports, cannot be loaded, none of it runs (and neither does
+   its error handler). Say so on the loading screen, and tell the app, which offers a reload. */
+addEventListener('error', function (e) {
+  var el = e.target;
+  if (window.__lensLoadFailed || !el || !((el.tagName === 'SCRIPT' && el.type === 'module') || (el.tagName === 'LINK' && el.rel === 'modulepreload'))) return;
+  window.__lensLoadFailed = true;
+  var q = null;
+  try { q = new URLSearchParams(location.search).get('lang'); } catch (x) {}
+  var pl = q ? q === 'pl' : /^pl/i.test(navigator.language || '');
+  var msg = pl ? 'Nie udało się wczytać widoku 3D. Sprawdź połączenie i odśwież stronę.' : 'The 3D view did not load. Check the connection and reload.';
+  var show = function () { var l = document.getElementById('loading'); if (l) { l.textContent = msg; l.style.textTransform = 'none'; l.style.letterSpacing = '0'; l.style.padding = '0 24px'; l.style.textAlign = 'center'; } };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', show); else show();
+  if (window.parent !== window) try { window.parent.postMessage({ source: 'btl-lens', type: 'error' }, location.origin); } catch (x) {}
+}, true);
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="./lens.css">
+</head>
+<body>
+<canvas id="gl" aria-label="3D model of skin under a dermatoscope"></canvas>
+<div id="lens" hidden>
+  <svg id="reticle" width="600" height="600"></svg>
+  <div class="tag" id="lensTag">Non-polarized · 10×</div>
+  <div class="scalebar" id="scalebar"><span>1 mm</span></div>
+</div>
+<div id="hist" hidden>
+  <canvas id="histCv" aria-label="Virtual H&amp;E section"></canvas>
+  <div id="histPins"></div>
+  <div id="histBar">
+    <span class="ttl" data-i18n="hist.ttl">H&amp;E section</span>
+    <label class="hz" for="hz"><span data-i18n="hist.cut">Cut position</span> <input id="hz" type="range" min="-3" max="3" step="0.05" value="0"> <b id="hzV">+0.00 mm</b></label>
+    <span class="grow"></span>
+    <span class="mag" id="hMag"></span>
+    <button type="button" class="hbtn" data-hf="fit" data-i18n="hist.fit">Fit</button>
+    <button type="button" class="hbtn" data-hf="lesion" data-i18n="hist.lesion">Lesion</button>
+    <button type="button" class="hbtn" data-hf="out" aria-label="Zoom out">−</button>
+    <button type="button" class="hbtn" data-hf="in" aria-label="Zoom in">+</button>
+  </div>
+</div>
+<div id="labels"></div>
+<div id="hint" data-i18n="hint">Drag to orbit · scroll or pinch to zoom · right-drag to pan</div>
+
+<header class="brand">
+  <img class="logo" alt="Akademia Dermatoskopii · dr Jacek Calik" width="405" height="138" src="./lens-logo.webp">
+  <h1 data-i18n="brand.h1">Beneath the Lens</h1>
+  <p data-i18n="brand.p">How a dermatoscope sees into skin</p>
+</header>
+
+<nav id="chapters" aria-label="Chapters"></nav>
+
+<aside id="panel" aria-label="Notes">
+  <button id="panelGrip" type="button">Hide notes</button>
+  <div id="panelInner"></div>
+</aside>
+
+<div id="dock">
+  <div id="dockIn">
+    <div class="grp"><span data-i18n="dock.light">Light</span>
+      <div class="seg" id="modeSeg" role="group" aria-label="Light mode">
+        <button type="button" data-m="0"><i class="dot" style="background:var(--m0)"></i><span class="full" data-i18n="mode.btn0">Dry skin</span><span class="short" data-i18n="mode.s0">Dry</span></button>
+        <button type="button" data-m="1"><i class="dot" style="background:var(--m1)"></i><span class="full" data-i18n="mode.btn1">Non-polarized</span><span class="short" data-i18n="mode.s1">Non-pol</span></button>
+        <button type="button" data-m="2"><i class="dot" style="background:var(--m2)"></i><span class="full" data-i18n="mode.btn2">Polarized</span><span class="short" data-i18n="mode.s2">Pol</span></button>
+        <button type="button" data-m="3"><i class="dot" style="background:var(--m3)"></i><span class="full" data-i18n="mode.btn3">405 nm</span><span class="short" data-i18n="mode.s3">405</span></button>
+      </div>
+    </div>
+    <div class="grp"><span data-i18n="dock.view">View</span>
+      <div class="seg" id="viewSeg" role="group" aria-label="View">
+        <button type="button" data-v="lens" data-i18n="view.lens">Lens</button>
+        <button type="button" data-v="orbit" data-i18n="view.orbit">3D</button>
+        <button type="button" data-v="section" data-i18n="view.section">Section</button>
+        <button type="button" data-v="layers" data-i18n="view.layers">Layers</button>
+        <button type="button" data-v="hist" data-i18n="view.hist">H&amp;E</button>
+      </div>
+    </div>
+    <div class="grp"><span data-i18n="dock.lesion">Lesion</span>
+      <select id="caseSel" aria-label="Lesion"></select>
+    </div>
+    <button type="button" class="tog" id="photonTog" aria-pressed="false"><i class="dot"></i><span data-i18n="dock.photons">Photons</span></button>
+    <button type="button" class="tog" id="fsBtn" title="Full screen" data-i18n-title="fs.title"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4.5V1h3.5M8.5 1H12v3.5M12 8.5V12H8.5M4.5 12H1V8.5"/></svg></button>
+  </div>
+</div>
+<div id="evoBar" hidden>
+  <div id="evoIn">
+    <button type="button" id="evoPlay" class="evoBtn" aria-label="Play"></button>
+    <div class="evoTrack"><div id="evoStages"></div><input id="evoRange" type="range" min="0" max="4" step="0.01" value="0"></div>
+    <button type="button" id="evoCmp" class="tog" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5.8"/><path d="M7 0.8v12.4"/></svg><span data-i18n="evo.cmp">Compare</span></button>
+  </div>
+</div>
+<div id="loading" data-i18n="loading">Building tissue…</div>
+
+<script type="module" src="./engine.js"></script>
+</body>
+</html>

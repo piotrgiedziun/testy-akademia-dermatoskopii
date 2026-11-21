@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useAuthStore } from '@/stores';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { ReCaptchaProvider } from '@/components/ReCaptchaProvider';
 import { Loading, TermsModal } from '@/components/ui';
+import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
 
 // Pages
 import { HomePage } from '@/features/home';
@@ -37,6 +38,12 @@ import {
   TournamentResultsPage,
   TournamentRankingPage,
 } from '@/features/tournament';
+
+// "Beneath the Lens" (3D explainer): loaded on demand, only logged-in users ever need it
+const LensPage = lazy(() => import('@/features/lens').then((m) => ({ default: m.LensPage })));
+const LensProjectorPage = lazy(() =>
+  import('@/features/lens').then((m) => ({ default: m.LensProjectorPage }))
+);
 
 function App() {
   const { initialize, isInitialized, user, acceptTerms, logout } = useAuthStore();
@@ -121,6 +128,32 @@ function App() {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Beneath the Lens: everyone logged in; the projector window of a presentation: admins */}
+        <Route
+          path="/lens"
+          element={
+            <ProtectedRoute>
+              <RouteErrorBoundary>
+                <Suspense fallback={<Loading fullScreen />}>
+                  <LensPage />
+                </Suspense>
+              </RouteErrorBoundary>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/lens/projector"
+          element={
+            <ProtectedRoute requireAdmin>
+              <RouteErrorBoundary>
+                <Suspense fallback={<Loading fullScreen />}>
+                  <LensProjectorPage />
+                </Suspense>
+              </RouteErrorBoundary>
             </ProtectedRoute>
           }
         />
